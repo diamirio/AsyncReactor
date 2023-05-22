@@ -18,7 +18,7 @@ struct TestView: View {
     @ActionBinding(TestReactor.self, keyPath: \.isOn, action: .togglePressed)
     private var isOnToggle: Bool
     
-    @ActionBinding(TestReactor.self, keyPath: \.query, cancelId: .init(id: "search", mode: .inFlight), action: TestReactor.Action.enterQuery)
+    @ActionBinding(TestReactor.self, keyPath: \.query, action: TestReactor.Action.enterQuery)
     private var query: String
     
     @ActionBinding(TestReactor.self, keyPath: \.sheetPresented, action: TestReactor.Action.setSheetPresented)
@@ -26,6 +26,10 @@ struct TestView: View {
     
     var body: some View {
         List {
+            ForEach(reactor.repositories.item ?? []) { repo in
+                Text(repo.name)
+            }
+            
             Toggle("Toggle", isOn: $isOn)
             Toggle("Toggle Action", isOn: $isOnToggle)
             Text("Toggle: \(String(reactor.isOn))")
@@ -52,6 +56,9 @@ struct TestView: View {
                     TestView()
                 }
             }
+        }
+        .refreshable {
+            await reactor.action(.load)
         }
     }
 }

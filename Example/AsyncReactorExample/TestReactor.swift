@@ -19,17 +19,19 @@ class TestReactor: AsyncReactor {
         case enterQuery(String)
         case longRunningAction
         case setSheetPresented(Bool)
+        case load
     }
     
     struct State {
         var isOn = false
         var query = ""
         var sheetPresented = false
+        var repositories: AsyncLoad<[Repository]> = .none
     }
     
     @Published
     private(set) var state: State
-
+    
     @MainActor
     init(state: State = State()) {
         self.state = state
@@ -38,7 +40,7 @@ class TestReactor: AsyncReactor {
             for await _ in await NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).values {
                 await self.handleNotification()
             }
-
+            
             logger.debug("lifecycleTask cancelled")
         }
     }
@@ -68,7 +70,17 @@ class TestReactor: AsyncReactor {
             
         case .setSheetPresented(let isPresented):
             state.sheetPresented = isPresented
+            
+        case .load:
+            Task {
+                let (data, _) = try await URLSession.shared.data(from: URL(string:"https://api.github.com/search/repositories?q=Q")!)
+                let decodedResponse = try? JSONDecoder().decode(RepositoriesResponse.self, from: data)
+                
+                print(String(decodedResponse?.repositories.count ?? 0))
+                state.repositories = .loaded(decodedResponse?.repositories ?? [])
+            }
         }
+        
     }
     
     @MainActor
