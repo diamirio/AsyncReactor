@@ -10,9 +10,9 @@ import AsyncReactor
 import UIKit
 import Logging
 
-private let logger = Logger(label: "TestReactor")
+private let logger = Logger(label: "RepositorySearchReactor")
 
-class TestReactor: AsyncReactor {
+class RepositorySearchReactor: AsyncReactor {
     enum Action {
         case toggle(Bool)
         case togglePressed

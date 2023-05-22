@@ -1,27 +1,27 @@
 //
-//  TestView.swift
-//  Rudi
+//  RepositorySearchView.swift
+//  AsyncReactorExample
 //
-//  Created by Dominik Arnhof on 14.04.23.
+//  Created by Ahmet Bozkan on 22.05.23.
 //
 
 import SwiftUI
 import AsyncReactor
 
-struct TestView: View {
+struct RepositorySearchView: View {
     @EnvironmentObject
-    private var reactor: TestReactor
+    private var reactor: RepositorySearchReactor
     
-    @ActionBinding(TestReactor.self, keyPath: \.isOn, action: TestReactor.Action.toggle)
+    @ActionBinding(RepositorySearchReactor.self, keyPath: \.isOn, action: RepositorySearchReactor.Action.toggle)
     private var isOn: Bool
     
-    @ActionBinding(TestReactor.self, keyPath: \.isOn, action: .togglePressed)
+    @ActionBinding(RepositorySearchReactor.self, keyPath: \.isOn, action: .togglePressed)
     private var isOnToggle: Bool
     
-    @ActionBinding(TestReactor.self, keyPath: \.query, action: TestReactor.Action.enterQuery)
+    @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, action: RepositorySearchReactor.Action.enterQuery)
     private var query: String
     
-    @ActionBinding(TestReactor.self, keyPath: \.sheetPresented, action: TestReactor.Action.setSheetPresented)
+    @ActionBinding(RepositorySearchReactor.self, keyPath: \.sheetPresented, action: RepositorySearchReactor.Action.setSheetPresented)
     private var sheetPresented: Bool
     
     var body: some View {
@@ -39,8 +39,8 @@ struct TestView: View {
             }
             
             NavigationLink("Push") {
-                ReactorView(TestReactor()) {
-                    TestView()
+                ReactorView(RepositorySearchReactor()) {
+                    RepositorySearchView()
                 }
             }
             
@@ -52,8 +52,8 @@ struct TestView: View {
         .navigationTitle("Test")
         .sheet(isPresented: $sheetPresented) {
             NavigationStack {
-                ReactorView(TestReactor()) {
-                    TestView()
+                ReactorView(RepositorySearchReactor()) {
+                    RepositorySearchView()
                 }
             }
         }
@@ -66,9 +66,10 @@ struct TestView: View {
 struct TestView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            ReactorView(TestReactor()) {
-                TestView()
+            ReactorView(RepositorySearchReactor()) {
+                RepositorySearchView()
             }
         }
     }
 }
+
