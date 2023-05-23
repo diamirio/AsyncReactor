@@ -26,8 +26,8 @@ struct RepositorySearchView: View {
     
     var body: some View {
         List {
-            ForEach(reactor.repositories.item ?? []) { repo in
-                Text(repo.name)
+            if reactor.repositories.item?.isEmpty == false || reactor.repositories.item != nil {
+                RepositoryList(repositories: reactor.repositories.item ?? [])
             }
             
             Toggle("Toggle", isOn: $isOn)
@@ -49,7 +49,7 @@ struct RepositorySearchView: View {
             }
         }
         .searchable(text: $query)
-        .navigationTitle("Test")
+        .navigationTitle("Repositories")
         .sheet(isPresented: $sheetPresented) {
             NavigationStack {
                 ReactorView(RepositorySearchReactor()) {

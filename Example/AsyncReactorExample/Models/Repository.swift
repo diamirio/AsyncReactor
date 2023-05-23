@@ -10,6 +10,7 @@ import Foundation
 struct Repository: Decodable, Identifiable {
     var id: Int
     let name: String
+    let full_name: String
     let description: String?
     let visibility: String
     
