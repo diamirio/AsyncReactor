@@ -25,41 +25,44 @@ struct RepositorySearchView: View {
     private var sheetPresented: Bool
     
     var body: some View {
-        List {
-            if reactor.repositories.item?.isEmpty == false || reactor.repositories.item != nil {
-                RepositoryList(repositories: reactor.repositories.item ?? [])
-            }
-            
-            Toggle("Toggle", isOn: $isOn)
-            Toggle("Toggle Action", isOn: $isOnToggle)
-            Text("Toggle: \(String(reactor.isOn))")
-            
-            Button("Long running action") {
-                reactor.send(.longRunningAction, id: .init(id: "longRunning", mode: [.lifecycle, .inFlight]))
-            }
-            
-            NavigationLink("Push") {
-                ReactorView(RepositorySearchReactor()) {
-                    RepositorySearchView()
+        NavigationView {
+            List {
+                if reactor.repositories.item?.isEmpty == false || reactor.repositories.item != nil {
+                    RepositoryList(repositories: reactor.repositories.item ?? [])
+                }
+                
+                Toggle("Toggle", isOn: $isOn)
+                Toggle("Toggle Action", isOn: $isOnToggle)
+                Text("Toggle: \(String(reactor.isOn))")
+                
+                Button("Long running action") {
+                    reactor.send(.longRunningAction, id: .init(id: "longRunning", mode: [.lifecycle, .inFlight]))
+                }
+                
+                NavigationLink("Push") {
+                    ReactorView(RepositorySearchReactor()) {
+                        RepositorySearchView()
+                    }
+                }
+                  
+                Button("Present") {
+                    reactor.send(.setSheetPresented(true))
                 }
             }
-            
-            Button("Present") {
-                reactor.send(.setSheetPresented(true))
+            .navigationTitle("Repositories")
+            .sheet(isPresented: $sheetPresented) {
+                NavigationStack {
+                    ReactorView(RepositorySearchReactor()) {
+                        RepositorySearchView()
+                    }
+                }
+            }
+            .refreshable {
+                await reactor.action(.load)
             }
         }
         .searchable(text: $query)
-        .navigationTitle("Repositories")
-        .sheet(isPresented: $sheetPresented) {
-            NavigationStack {
-                ReactorView(RepositorySearchReactor()) {
-                    RepositorySearchView()
-                }
-            }
-        }
-        .refreshable {
-            await reactor.action(.load)
-        }
+        
     }
 }
 
