@@ -12,10 +12,19 @@ struct Repository: Decodable, Identifiable {
     let name: String
     let full_name: String
     let description: String?
+    let html_url: String
+    
     let visibility: String
+    var isVisible: Bool {
+        if visibility.lowercased() == "public" {
+            return true
+        }
+        else {
+            return false
+        }
+    }
     
     var owner: Owner
-    
     struct Owner: Decodable {
         var avatar_url: String
     }

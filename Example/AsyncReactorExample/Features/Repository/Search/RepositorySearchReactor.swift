@@ -14,19 +14,16 @@ private let logger = Logger(label: "RepositorySearchReactor")
 
 class RepositorySearchReactor: AsyncReactor {
     enum Action {
-        case toggle(Bool)
-        case togglePressed
+        case onHidePrivateToggle
         case enterQuery(String)
-        case longRunningAction
-        case setSheetPresented(Bool)
         case load
     }
     
     struct State {
-        var isOn = false
+        var hidePrivate = false
         var query = ""
-        var sheetPresented = false
         var repositories: AsyncLoad<[Repository]> = .none
+        var isLoading = false
     }
     
     @Published
@@ -47,10 +44,8 @@ class RepositorySearchReactor: AsyncReactor {
     
     func action(_ action: Action) async {
         switch action {
-        case .toggle(let isOn):
-            state.isOn = isOn
-        case .togglePressed:
-            state.isOn.toggle()
+        case .onHidePrivateToggle:
+            state.hidePrivate.toggle()
         case .enterQuery(let query):
             state.query = query
             
@@ -59,22 +54,9 @@ class RepositorySearchReactor: AsyncReactor {
             guard !Task.isCancelled else { return }
             
             logger.debug("search: \(query)")
-            
-        case .longRunningAction:
-            do {
-                try await Task.sleep(for: .seconds(10))
-                logger.debug("long running action success")
-            } catch {
-                logger.error("long running action error: \(error)")
-            }
-            
-        case .setSheetPresented(let isPresented):
-            state.sheetPresented = isPresented
-            
         case .load:
             Task {
                 state.repositories = .loading
-            
                 
                 do {
                     let currentQuery = state.query.isEmpty ? "iOS" : state.query
@@ -95,10 +77,10 @@ class RepositorySearchReactor: AsyncReactor {
     
     @MainActor
     private func handleNotification() {
-        state.isOn.toggle()
+        state.hidePrivate.toggle()
     }
     
     deinit {
-        logger.debug("deinit TestReactor")
+        logger.debug("deinit RepositorySearchReactor")
     }
 }

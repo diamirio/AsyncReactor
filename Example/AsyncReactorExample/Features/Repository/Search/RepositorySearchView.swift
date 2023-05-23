@@ -12,51 +12,31 @@ struct RepositorySearchView: View {
     @EnvironmentObject
     private var reactor: RepositorySearchReactor
     
-    @ActionBinding(RepositorySearchReactor.self, keyPath: \.isOn, action: RepositorySearchReactor.Action.toggle)
-    private var isOn: Bool
-    
-    @ActionBinding(RepositorySearchReactor.self, keyPath: \.isOn, action: .togglePressed)
-    private var isOnToggle: Bool
+    @ActionBinding(RepositorySearchReactor.self, keyPath: \.hidePrivate, action: RepositorySearchReactor.Action.onHidePrivateToggle)
+    private var hidePrivate: Bool
     
     @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, action: RepositorySearchReactor.Action.enterQuery)
     private var query: String
     
-    @ActionBinding(RepositorySearchReactor.self, keyPath: \.sheetPresented, action: RepositorySearchReactor.Action.setSheetPresented)
-    private var sheetPresented: Bool
-    
     var body: some View {
         NavigationView {
             List {
-                if reactor.repositories.item?.isEmpty == false || reactor.repositories.item != nil {
-                    RepositoryList(repositories: reactor.repositories.item ?? [])
-                }
+                Toggle("Hide Private Repos", isOn: $hidePrivate)
                 
-                Toggle("Toggle", isOn: $isOn)
-                Toggle("Toggle Action", isOn: $isOnToggle)
-                Text("Toggle: \(String(reactor.isOn))")
-                
-                Button("Long running action") {
-                    reactor.send(.longRunningAction, id: .init(id: "longRunning", mode: [.lifecycle, .inFlight]))
-                }
-                
-                NavigationLink("Push") {
-                    ReactorView(RepositorySearchReactor()) {
-                        RepositorySearchView()
+                if reactor.repositories.isLoading {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
                     }
+                    .padding()
                 }
-                  
-                Button("Present") {
-                    reactor.send(.setSheetPresented(true))
+                
+                if reactor.repositories.item?.isEmpty == false || reactor.repositories.item != nil {
+                    RepositoryList(repositories: reactor.repositories.item?.filter { !hidePrivate || $0.isVisible } ?? [])
                 }
             }
             .navigationTitle("Repositories")
-            .sheet(isPresented: $sheetPresented) {
-                NavigationStack {
-                    ReactorView(RepositorySearchReactor()) {
-                        RepositorySearchView()
-                    }
-                }
-            }
             .refreshable {
                 reactor.send(.load)
             }
@@ -66,9 +46,8 @@ struct RepositorySearchView: View {
             reactor.send(.load)
         }
         .task {
-            await reactor.action(.load                  )
+            await reactor.action(.load)
         }
-        
     }
 }
 

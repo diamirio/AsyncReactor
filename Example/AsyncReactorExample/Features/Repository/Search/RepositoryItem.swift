@@ -6,21 +6,23 @@
 //
 
 import SwiftUI
+import AsyncReactor
 
 struct RepositoryItem: View {
     var repository: Repository
     
     var body: some View {
         NavigationLink {
-            RepositoryDetailView(repository: repository)
+            ReactorView(RepositoryDetailReactor()) {
+                RepositoryDetailView(repository: repository)
+            }
         } label: {
-            VStack {
+            HStack {
                 AsyncImage(url: URL(string: repository.owner.avatar_url)) { image in
                     image
                         .resizable()
+                        .frame(width: 50, height: 50)
                         .scaledToFit()
-                        .border(.white, width: 4)
-                        .shadow(radius: 7)
                         .cornerRadius(8)
                 } placeholder: {
                     ProgressView()
@@ -30,12 +32,11 @@ struct RepositoryItem: View {
                     .font(.body)
             }
         }
-        
     }
 }
 
 struct RepositoryItem_Previews: PreviewProvider {
     static var previews: some View {
-        RepositoryItem(repository: Repository(id: 0, name: "Test Repo", full_name: "github/Test Repo", description: "", visibility: "public", owner: Repository.Owner(avatar_url: "https://avatars.githubusercontent.com/u/60294?v=4")))
+        RepositoryItem(repository: Repository(id: 0, name: "Test Repo", full_name: "github/Test Repo", description: "", html_url: "google.com", visibility: "public", owner: Repository.Owner(avatar_url: "https://avatars.githubusercontent.com/u/60294?v=4")))
     }
 }
