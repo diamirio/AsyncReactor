@@ -22,7 +22,7 @@ class RepositorySearchReactor: AsyncReactor {
     struct State {
         var hidePrivate = false
         var query = ""
-        var repositories: AsyncLoad<[Repository]> = .none
+        var repositories: [Repository] = []
         var isLoading = false
     }
     
@@ -56,14 +56,15 @@ class RepositorySearchReactor: AsyncReactor {
             logger.debug("search: \(query)")
         case .load:
             Task {
-                state.repositories = .loading
+                state.isLoading.toggle()
                 
                 do {
                     let currentQuery = state.query.isEmpty ? "iOS" : state.query
                     let (data, _) = try await URLSession.shared.data(from: URL(string:"https://api.github.com/search/repositories?q=\(currentQuery)")!)
                     let decodedResponse = try? JSONDecoder().decode(RepositoriesResponse.self, from: data)
                     
-                    state.repositories = .loaded(decodedResponse?.repositories ?? [])
+                    state.repositories = decodedResponse?.repositories ?? []
+                    state.isLoading.toggle()
                     
                     logger.debug("search repositories success: \(String(describing: decodedResponse?.repositories.count))")
                 }

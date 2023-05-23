@@ -23,7 +23,7 @@ struct RepositorySearchView: View {
             List {
                 Toggle("Hide Private Repos", isOn: $hidePrivate)
                 
-                if reactor.repositories.isLoading {
+                if reactor.isLoading {
                     HStack {
                         Spacer()
                         ProgressView()
@@ -32,8 +32,8 @@ struct RepositorySearchView: View {
                     .padding()
                 }
                 
-                if reactor.repositories.item?.isEmpty == false || reactor.repositories.item != nil {
-                    RepositoryList(repositories: reactor.repositories.item?.filter { !hidePrivate || $0.isVisible } ?? [])
+                if !reactor.repositories.isEmpty {
+                    RepositoryList(repositories: reactor.repositories.filter { !hidePrivate || $0.isVisible })
                 }
             }
             .navigationTitle("Repositories")
