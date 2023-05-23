@@ -63,7 +63,10 @@ struct RepositorySearchView: View {
         }
         .searchable(text: $query)
         .onSubmit(of: .search) {
-            reactor.send(.load)
+            await reactor.action(.load)
+        }
+        .task {
+            await reactor.action(.load)
         }
         
     }

@@ -36,8 +36,6 @@ class RepositorySearchReactor: AsyncReactor {
     init(state: State = State()) {
         self.state = state
         
-        send(.load)
-        
         lifecycleTask {
             for await _ in await NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).values {
                 await self.handleNotification()
