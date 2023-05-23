@@ -58,10 +58,13 @@ struct RepositorySearchView: View {
                 }
             }
             .refreshable {
-                await reactor.action(.load)
+                reactor.send(.load)
             }
         }
         .searchable(text: $query)
+        .onSubmit(of: .search) {
+            reactor.send(.load)
+        }
         
     }
 }

@@ -36,6 +36,8 @@ class RepositorySearchReactor: AsyncReactor {
     init(state: State = State()) {
         self.state = state
         
+        send(.load)
+        
         lifecycleTask {
             for await _ in await NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).values {
                 await self.handleNotification()
@@ -73,11 +75,21 @@ class RepositorySearchReactor: AsyncReactor {
             
         case .load:
             Task {
-                let (data, _) = try await URLSession.shared.data(from: URL(string:"https://api.github.com/search/repositories?q=Q")!)
-                let decodedResponse = try? JSONDecoder().decode(RepositoriesResponse.self, from: data)
+                state.repositories = .loading
+            
                 
-                print(String(decodedResponse?.repositories.count ?? 0))
-                state.repositories = .loaded(decodedResponse?.repositories ?? [])
+                do {
+                    let currentQuery = state.query.isEmpty ? "iOS" : state.query
+                    let (data, _) = try await URLSession.shared.data(from: URL(string:"https://api.github.com/search/repositories?q=\(currentQuery)")!)
+                    let decodedResponse = try? JSONDecoder().decode(RepositoriesResponse.self, from: data)
+                    
+                    state.repositories = .loaded(decodedResponse?.repositories ?? [])
+                    
+                    logger.debug("search repositories success: \(String(describing: decodedResponse?.repositories.count))")
+                }
+                catch {
+                    logger.error("error while searching repositories: \(error)")
+                }
             }
         }
         
