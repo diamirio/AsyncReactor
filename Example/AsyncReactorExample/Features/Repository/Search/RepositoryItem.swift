@@ -11,21 +11,26 @@ struct RepositoryItem: View {
     var repository: Repository
     
     var body: some View {
-        VStack {
-            AsyncImage(url: URL(string: repository.owner.avatar_url)) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .border(.white, width: 4)
-                    .shadow(radius: 7)
-                    .cornerRadius(8)
-            } placeholder: {
-                ProgressView()
+        NavigationLink {
+            RepositoryDetailView(repository: repository)
+        } label: {
+            VStack {
+                AsyncImage(url: URL(string: repository.owner.avatar_url)) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .border(.white, width: 4)
+                        .shadow(radius: 7)
+                        .cornerRadius(8)
+                } placeholder: {
+                    ProgressView()
+                }
+                
+                Text(repository.full_name)
+                    .font(.body)
             }
-            
-            Text(repository.full_name)
-                .font(.body)
         }
+        
     }
 }
 

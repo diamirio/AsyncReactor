@@ -18,13 +18,13 @@ struct RepositoryDetailView: View {
             AsyncImage(url: URL(string: repository.owner.avatar_url)) { image in
                 image
                     .resizable()
-                    .scaledToFit()
-                    .frame(height: 200)
                     .clipShape(Circle())
                     .overlay {
                         Circle().stroke(.white, lineWidth: 4)
                     }
                     .shadow(radius: 7)
+                    .scaledToFit()
+                    .frame(height: 200)
             } placeholder: {
                 ProgressView()
             }
@@ -48,6 +48,8 @@ struct RepositoryDetailView: View {
                         .font(.body)
                 }
             }
+            
+            Spacer()
         }
         .padding()
         
