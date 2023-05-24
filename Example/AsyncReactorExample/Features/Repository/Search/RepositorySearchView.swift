@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AsyncReactor
+import Combine
 
 struct RepositorySearchView: View {
     @EnvironmentObject
@@ -18,6 +19,8 @@ struct RepositorySearchView: View {
     @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, action: RepositorySearchReactor.Action.enterQuery)
     private var query: String
     
+    private let queryPublisher = PassthroughSubject<String, Never>()
+    
     var body: some View {
         NavigationView {
             List {
@@ -26,7 +29,7 @@ struct RepositorySearchView: View {
                 if reactor.isLoading {
                     HStack {
                         Spacer()
-                        ProgressView()
+                        ProgressView().id(UUID())
                         Spacer()
                     }
                     .padding()
@@ -40,13 +43,20 @@ struct RepositorySearchView: View {
             .refreshable {
                 reactor.send(.load)
             }
-        }
-        .searchable(text: $query)
-        .onSubmit(of: .search) {
-            reactor.send(.load)
-        }
-        .task {
-            await reactor.action(.load)
+            
+            .searchable(text: $query)
+            .onChange(of: query) { query in
+                queryPublisher.send(query)
+            }
+            .onReceive(
+                queryPublisher
+                    .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
+            ) { query in
+                reactor.send(.load)
+            }
+            .task {
+                await reactor.action(.load)
+            }
         }
     }
 }

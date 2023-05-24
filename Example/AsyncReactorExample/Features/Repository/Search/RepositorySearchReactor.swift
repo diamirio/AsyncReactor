@@ -49,14 +49,14 @@ class RepositorySearchReactor: AsyncReactor {
         case .enterQuery(let query):
             state.query = query
             
-            try? await Task.sleep(for: .milliseconds(500))
+            try? await Task.sleep(for: .seconds(5))
             
             guard !Task.isCancelled else { return }
             
             logger.debug("search: \(query)")
         case .load:
             Task {
-                state.isLoading.toggle()
+                state.isLoading = true
                 
                 do {
                     let currentQuery = state.query.isEmpty ? "iOS" : state.query
@@ -64,7 +64,7 @@ class RepositorySearchReactor: AsyncReactor {
                     let decodedResponse = try? JSONDecoder().decode(RepositoriesResponse.self, from: data)
                     
                     state.repositories = decodedResponse?.repositories ?? []
-                    state.isLoading.toggle()
+                    state.isLoading = false
                     
                     logger.debug("search repositories success: \(String(describing: decodedResponse?.repositories.count))")
                 }
