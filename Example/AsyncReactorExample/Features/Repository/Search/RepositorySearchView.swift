@@ -36,7 +36,9 @@ struct RepositorySearchView: View {
                 }
                 
                 if !reactor.repositories.isEmpty {
-                    RepositoryList(repositories: reactor.repositories.filter { !hidePrivate || $0.isVisible })
+                    RepositoryList(
+                        repositories: reactor.repositories.filter { !hidePrivate || $0.isVisible }
+                    )
                 }
             }
             .navigationTitle("Repositories")

@@ -10,8 +10,6 @@ import SwiftUI
 struct RepositoryList: View {
     var repositories: [Repository]
     
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
-    
     var body: some View {
         ForEach(repositories) { repository in
             RepositoryItem(repository: repository)
