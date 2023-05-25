@@ -18,54 +18,52 @@ struct RepositoryDetailView: View {
     private var sheetPresented: Bool
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                AsyncImage(url: URL(string: repository.owner.avatarUrl)) { image in
-                    image
-                        .resizable()
-                        .clipShape(Circle())
-                        .overlay {
-                            Circle().stroke(.white, lineWidth: 4)
-                        }
-                        .shadow(radius: 7)
-                        .scaledToFit()
-                        .frame(height: 200)
-                } placeholder: {
-                    ProgressView()
-                }
-                
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text(repository.name)
-                            .font(.title2)
-                        
-                        Spacer()
-                        
-                        Label("Visibility", systemImage: repository.isVisible ? "lock.open" : "lock")
-                            .labelStyle(.iconOnly)
-                            .foregroundColor(repository.isVisible ? Color.green : Color.red)
+        ScrollView {
+            AsyncImage(url: URL(string: repository.owner.avatarUrl)) { image in
+                image
+                    .resizable()
+                    .clipShape(Circle())
+                    .overlay {
+                        Circle().stroke(.white, lineWidth: 4)
                     }
-                    
-                    Divider()
-                    
-                    Button("Show Description") {
-                        reactor.send(.setSheetPresented(true))
-                    }
-                    .disabled(reactor.longRunningActionRunning)
+                    .shadow(radius: 7)
+                    .scaledToFit()
+                    .frame(height: 200)
+            } placeholder: {
+                ProgressView()
+            }
+            
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(repository.name)
+                        .font(.title2)
                     
                     Spacer()
                     
-                    Button("Long running action") {
-                        reactor.send(.longRunningAction, id: .init(id: "longRunning", mode: [.lifecycle, .inFlight]))
-                    }
-                    
-                    if reactor.longRunningActionRunning {
-                        ProgressView()
-                    }
+                    Label("Visibility", systemImage: repository.isVisible ? "lock.open" : "lock")
+                        .labelStyle(.iconOnly)
+                        .foregroundColor(repository.isVisible ? Color.green : Color.red)
+                }
+                
+                Divider()
+                
+                Button("Show Description") {
+                    reactor.send(.setSheetPresented(true))
+                }
+                .disabled(reactor.longRunningActionRunning)
+                
+                Spacer()
+                
+                Button("Long running action") {
+                    reactor.send(.longRunningAction, id: .init(id: "longRunning", mode: [.lifecycle, .inFlight]))
+                }
+                
+                if reactor.longRunningActionRunning {
+                    ProgressView()
                 }
             }
-            .padding()
         }
+        .padding()
         .toolbar {
             Link(destination: URL(string: repository.htmlUrl)!) {
                 Image(systemName: "square.and.arrow.up")
