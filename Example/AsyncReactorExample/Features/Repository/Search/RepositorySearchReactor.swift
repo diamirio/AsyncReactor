@@ -55,22 +55,20 @@ class RepositorySearchReactor: AsyncReactor {
             
             send(.load)
         case .load:
-            Task {
-                state.isLoading = true
+            state.isLoading = true
+            
+            do {
+                let currentQuery = state.query.isEmpty ? "iOS" : state.query
+                let (data, _) = try await URLSession.shared.data(from: URL(string:"https://api.github.com/search/repositories?q=\(currentQuery)")!)
+                let decodedResponse = try JSONDecoder().decode(RepositoriesResponse.self, from: data)
                 
-                do {
-                    let currentQuery = state.query.isEmpty ? "iOS" : state.query
-                    let (data, _) = try await URLSession.shared.data(from: URL(string:"https://api.github.com/search/repositories?q=\(currentQuery)")!)
-                    let decodedResponse = try? JSONDecoder().decode(RepositoriesResponse.self, from: data)
-                    
-                    state.repositories = decodedResponse?.repositories ?? []
-                    state.isLoading = false
-                    
-                    logger.debug("search repositories success: \(String(describing: decodedResponse?.repositories.count))")
-                }
-                catch {
-                    logger.error("error while searching repositories: \(error)")
-                }
+                state.repositories = decodedResponse.repositories
+                state.isLoading = false
+                
+                logger.debug("search repositories success: \(String(describing: decodedResponse.repositories.count))")
+            }
+            catch {
+                logger.error("error while searching repositories: \(error)")
             }
         }
     }
