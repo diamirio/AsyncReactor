@@ -64,16 +64,11 @@ struct RepositoryDetailView: View {
                     }
                 }
             }
-            
             .padding()
         }
         .toolbar {
-            Button {
-                if let url = URL(string: repository.htmlUrl) {
-                    UIApplication.shared.open(url)
-                }
-            } label: {
-                Label("Open In Browser", systemImage: "square.and.arrow.up")
+            Link(destination: URL(string: repository.htmlUrl)!) {
+                Image(systemName: "square.and.arrow.up")
             }
         }
         .sheet(isPresented: $sheetPresented) {
