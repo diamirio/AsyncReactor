@@ -22,7 +22,7 @@ struct RepositorySearchView: View {
     private let queryPublisher = PassthroughSubject<String, Never>()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 Toggle("Hide Private Repos", isOn: $hidePrivate)
                 
