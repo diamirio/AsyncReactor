@@ -51,12 +51,10 @@ struct RepositorySearchView: View {
     }
 }
 
-struct TestView_Previews: PreviewProvider {
+struct RepositorySearchView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
-            ReactorView(RepositorySearchReactor()) {
-                RepositorySearchView()
-            }
+        ReactorView(RepositorySearchReactor()) {
+            RepositorySearchView()
         }
     }
 }
