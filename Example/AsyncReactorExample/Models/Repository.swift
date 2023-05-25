@@ -10,9 +10,9 @@ import Foundation
 struct Repository: Decodable, Identifiable {
     var id: Int
     let name: String
-    let full_name: String
+    let fullName: String
     let description: String?
-    let html_url: String
+    let htmlUrl: String
     
     let visibility: String
     var isVisible: Bool {
@@ -25,17 +25,31 @@ struct Repository: Decodable, Identifiable {
     }
     
     var owner: Owner
+    
     struct Owner: Decodable {
-        var avatar_url: String
+        var avatarUrl: String
+        
+        enum CodingKeys: String, CodingKey {
+            case avatarUrl = "avatar_url"
+        }
+    }
+    
+    enum CodingKeys : String, CodingKey {
+        case id
+        case name
+        case fullName = "full_name"
+        case description
+        case htmlUrl = "html_url"
+        case visibility
+        case owner
     }
 }
 
 struct RepositoriesResponse: Decodable {
-
     let totalCount: Int
     let repositories: [Repository]
     var nextPage: URL?
-
+    
     private enum CodingKeys: String, CodingKey {
         case totalCount = "total_count"
         case repositories = "items"

@@ -18,7 +18,7 @@ struct RepositoryItem: View {
             }
         } label: {
             HStack {
-                AsyncImage(url: URL(string: repository.owner.avatar_url)) { image in
+                AsyncImage(url: URL(string: repository.owner.avatarUrl)) { image in
                     image
                         .resizable()
                         .frame(width: 50, height: 50)
@@ -28,7 +28,7 @@ struct RepositoryItem: View {
                     ProgressView()
                 }
                 
-                Text(repository.full_name)
+                Text(repository.fullName)
                     .font(.body)
             }
         }
@@ -37,6 +37,6 @@ struct RepositoryItem: View {
 
 struct RepositoryItem_Previews: PreviewProvider {
     static var previews: some View {
-        RepositoryItem(repository: Repository(id: 0, name: "Test Repo", full_name: "github/Test Repo", description: "", html_url: "google.com", visibility: "public", owner: Repository.Owner(avatar_url: "https://avatars.githubusercontent.com/u/60294?v=4")))
+        RepositoryItem(repository: Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "", htmlUrl: "google.com", visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")))
     }
 }
