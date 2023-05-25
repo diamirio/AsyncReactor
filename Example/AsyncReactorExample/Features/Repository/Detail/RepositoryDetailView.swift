@@ -63,7 +63,7 @@ struct RepositoryDetailView: View {
                 }
             }
         }
-        .padding()
+        .padding(.horizontal)
         .toolbar {
             Link(destination: URL(string: repository.htmlUrl)!) {
                 Image(systemName: "square.and.arrow.up")
