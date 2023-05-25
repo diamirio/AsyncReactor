@@ -19,8 +19,6 @@ struct RepositorySearchView: View {
     @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, action: RepositorySearchReactor.Action.enterQuery)
     private var query: String
     
-    private let queryPublisher = PassthroughSubject<String, Never>()
-    
     var body: some View {
         NavigationStack {
             List {
@@ -45,17 +43,7 @@ struct RepositorySearchView: View {
             .refreshable {
                 reactor.send(.load)
             }
-            
             .searchable(text: $query)
-            .onChange(of: query) { query in
-                queryPublisher.send(query)
-            }
-            .onReceive(
-                queryPublisher
-                    .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
-            ) { query in
-                reactor.send(.load)
-            }
             .task {
                 await reactor.action(.load)
             }

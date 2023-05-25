@@ -49,11 +49,11 @@ class RepositorySearchReactor: AsyncReactor {
         case .enterQuery(let query):
             state.query = query
             
-            try? await Task.sleep(for: .seconds(5))
+            try? await Task.sleep(for: .seconds(1))
             
             guard !Task.isCancelled else { return }
             
-            logger.debug("search: \(query)")
+            send(.load)
         case .load:
             Task {
                 state.isLoading = true
@@ -73,7 +73,6 @@ class RepositorySearchReactor: AsyncReactor {
                 }
             }
         }
-        
     }
     
     @MainActor
