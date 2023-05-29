@@ -21,10 +21,10 @@ struct RepositoryList: View {
 struct RepositoryList_Previews: PreviewProvider {
     static var previews: some View {
         RepositoryList(repositories: [
-            Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "",htmlUrl: "google.com", visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")),
-            Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "",htmlUrl: "google.com", visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")),
-            Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "",htmlUrl: "google.com", visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")),
-            Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "", htmlUrl: "google.com",visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4"))
+            Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "",htmlUrl: "google.com",watchersCount: 1, forks: 1, visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")),
+            Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "",htmlUrl: "google.com",watchersCount: 1, forks: 1, visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")),
+            Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "",htmlUrl: "google.com",watchersCount: 1, forks: 1, visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")),
+            Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "", htmlUrl: "google.com",watchersCount: 1, forks: 1,visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4"))
         ])
     }
 }

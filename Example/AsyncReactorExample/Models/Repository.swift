@@ -7,12 +7,14 @@
 
 import Foundation
 
-struct Repository: Decodable, Identifiable {
+struct Repository: Decodable, Identifiable, Hashable {
     var id: Int
     let name: String
     let fullName: String
     let description: String?
     let htmlUrl: String
+    let watchersCount: Int
+    let forks: Int
     
     let visibility: String
     var isVisible: Bool {
@@ -26,7 +28,7 @@ struct Repository: Decodable, Identifiable {
     
     var owner: Owner
     
-    struct Owner: Decodable {
+    struct Owner: Decodable, Hashable {
         var avatarUrl: String
         
         enum CodingKeys: String, CodingKey {
@@ -42,6 +44,8 @@ struct Repository: Decodable, Identifiable {
         case htmlUrl = "html_url"
         case visibility
         case owner
+        case watchersCount = "watchers_count"
+        case forks
     }
 }
 

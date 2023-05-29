@@ -19,6 +19,9 @@ struct RepositorySearchView: View {
     @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, action: RepositorySearchReactor.Action.enterQuery)
     private var query: String
     
+    @ActionBinding(RepositorySearchReactor.self, keyPath: \.sortBy, action: RepositorySearchReactor.Action.onSortOptionSelected)
+    private var sortOption: SortOptions
+    
     var body: some View {
         NavigationStack {
             List {
@@ -35,7 +38,18 @@ struct RepositorySearchView: View {
                 
                 if !reactor.repositories.isEmpty {
                     RepositoryList(
-                        repositories: reactor.repositories.filter { !hidePrivate || $0.isVisible }
+                        repositories: reactor.repositories
+                            .filter {
+                                !hidePrivate || $0.isVisible
+                            }
+                            .sorted(by: {
+                                switch sortOption {
+                                case .watchers:
+                                    return $0.watchersCount < $1.watchersCount
+                                case .forks:
+                                    return $0.forks < $1.forks
+                                }
+                            })
                     )
                 }
             }
@@ -44,6 +58,17 @@ struct RepositorySearchView: View {
                 reactor.send(.load)
             }
             .searchable(text: $query)
+            .toolbar {
+                ToolbarItem {
+                    Menu("Sort By") {
+                        Picker("Sort By", selection: $sortOption) {
+                            ForEach(SortOptions.allCases, id: \.self) {
+                                Text($0.rawValue)
+                            }
+                        }
+                    }
+                }
+            }
             .task {
                 await reactor.action(.load)
             }

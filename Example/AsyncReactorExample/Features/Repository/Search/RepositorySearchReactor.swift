@@ -12,11 +12,17 @@ import Logging
 
 private let logger = Logger(label: "RepositorySearchReactor")
 
+enum SortOptions: String, CaseIterable {
+    case watchers = "Watchers Count"
+    case forks = "Forks"
+}
+
 class RepositorySearchReactor: AsyncReactor {
     enum Action {
         case onHidePrivateToggle
         case enterQuery(String)
         case load
+        case onSortOptionSelected(SortOptions)
     }
     
     struct State {
@@ -24,6 +30,7 @@ class RepositorySearchReactor: AsyncReactor {
         var query = ""
         var repositories: [Repository] = []
         var isLoading = false
+        var sortBy: SortOptions = SortOptions.watchers
     }
     
     @Published
@@ -34,9 +41,9 @@ class RepositorySearchReactor: AsyncReactor {
         self.state = state
         
         lifecycleTask {
-            for await _ in await NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).values {
-                await self.handleNotification()
-            }
+            let sortBy = UserDefaults.standard.string(forKey: "sortBy") ?? SortOptions.watchers.rawValue
+            
+            await self.handleSortOption(sortBy)
             
             logger.debug("lifecycleTask cancelled")
         }
@@ -46,6 +53,7 @@ class RepositorySearchReactor: AsyncReactor {
         switch action {
         case .onHidePrivateToggle:
             state.hidePrivate.toggle()
+            
         case .enterQuery(let query):
             state.query = query
             
@@ -53,7 +61,7 @@ class RepositorySearchReactor: AsyncReactor {
             
             guard !Task.isCancelled else { return }
             
-            send(.load)
+            await self.action(.load)
         case .load:
             state.isLoading = true
             
@@ -70,12 +78,15 @@ class RepositorySearchReactor: AsyncReactor {
             catch {
                 logger.error("error while searching repositories: \(error)")
             }
+        case .onSortOptionSelected(let option):
+            state.sortBy = option
+            UserDefaults.standard.set(state.sortBy.rawValue, forKey: "sortBy")
         }
     }
     
     @MainActor
-    private func handleNotification() {
-        state.hidePrivate.toggle()
+    private func handleSortOption(_ value: String) {
+        state.sortBy = SortOptions(rawValue: value)!
     }
     
     deinit {

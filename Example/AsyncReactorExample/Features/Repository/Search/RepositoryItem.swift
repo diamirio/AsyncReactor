@@ -12,11 +12,7 @@ struct RepositoryItem: View {
     var repository: Repository
     
     var body: some View {
-        NavigationLink {
-            ReactorView(RepositoryDetailReactor()) {
-                RepositoryDetailView(repository: repository)
-            }
-        } label: {
+        NavigationLink(value: repository) {
             HStack {
                 AsyncImage(url: URL(string: repository.owner.avatarUrl)) { image in
                     image
@@ -32,11 +28,16 @@ struct RepositoryItem: View {
                     .font(.body)
             }
         }
+        .navigationDestination(for: Repository.self) { repository in
+            ReactorView(RepositoryDetailReactor()) {
+                RepositoryDetailView(repository: repository)
+            }
+        }
     }
 }
 
 struct RepositoryItem_Previews: PreviewProvider {
     static var previews: some View {
-        RepositoryItem(repository: Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "", htmlUrl: "google.com", visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")))
+        RepositoryItem(repository: Repository(id: 0, name: "Test Repo", fullName: "github/Test Repo", description: "", htmlUrl: "google.com", watchersCount: 1, forks: 1, visibility: "public", owner: Repository.Owner(avatarUrl: "https://avatars.githubusercontent.com/u/60294?v=4")))
     }
 }
