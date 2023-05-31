@@ -12,9 +12,20 @@ import Logging
 
 private let logger = Logger(label: "RepositorySearchReactor")
 
-enum SortOptions: String, CaseIterable {
-    case watchers = "Watchers Count"
-    case forks = "Forks"
+enum SortOptions: String, CaseIterable, Identifiable {
+    var id: Self { return self }
+    
+    case watchers = "watchers"
+    case forks = "forks"
+    
+    var displayName: String {
+        switch self {
+        case .watchers:
+            return "Watchers Count"
+        case .forks:
+            return "Forks"
+        }
+    }
 }
 
 class RepositorySearchReactor: AsyncReactor {
@@ -30,7 +41,7 @@ class RepositorySearchReactor: AsyncReactor {
         var query = ""
         var repositories: [Repository] = []
         var isLoading = false
-        var sortBy: SortOptions = SortOptions.watchers
+        var sortBy: SortOptions = .watchers
     }
     
     @Published

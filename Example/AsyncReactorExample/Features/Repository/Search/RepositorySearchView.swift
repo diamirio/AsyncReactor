@@ -62,8 +62,8 @@ struct RepositorySearchView: View {
                 ToolbarItem {
                     Menu("Sort By") {
                         Picker("Sort By", selection: $sortOption) {
-                            ForEach(SortOptions.allCases, id: \.self) {
-                                Text($0.rawValue)
+                            ForEach(SortOptions.allCases) {
+                                Text($0.displayName)
                             }
                         }
                     }
