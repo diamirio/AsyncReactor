@@ -16,7 +16,7 @@ struct RepositorySearchView: View {
     @ActionBinding(RepositorySearchReactor.self, keyPath: \.hidePrivate, action: RepositorySearchReactor.Action.onHidePrivateToggle)
     private var hidePrivate: Bool
     
-    @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, action: RepositorySearchReactor.Action.enterQuery)
+    @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, cancelId: .init(id: "enterQuery", mode: .inFlight), action: RepositorySearchReactor.Action.enterQuery)
     private var query: String
     
     @ActionBinding(RepositorySearchReactor.self, keyPath: \.sortBy, action: RepositorySearchReactor.Action.onSortOptionSelected)
