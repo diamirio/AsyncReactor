@@ -6,9 +6,19 @@
 //
 
 import SwiftUI
+import Logging
 
 @main
 struct AsyncReactorExampleApp: App {
+    
+    init() {
+        LoggingSystem.bootstrap { label in
+            var standardOutputLogHandler = StreamLogHandler.standardOutput(label: label)
+            standardOutputLogHandler.logLevel = .debug
+            return standardOutputLogHandler
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
