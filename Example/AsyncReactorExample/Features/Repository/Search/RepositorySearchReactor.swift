@@ -51,10 +51,13 @@ class RepositorySearchReactor: AsyncReactor {
     init(state: State = State()) {
         self.state = state
         
+        let sortBy = UserDefaults.standard.string(forKey: "sortBy") ?? SortOptions.watchers.rawValue
+        self.handleSortOption(sortBy)
+        
         lifecycleTask {
-            let sortBy = UserDefaults.standard.string(forKey: "sortBy") ?? SortOptions.watchers.rawValue
-            
-            await self.handleSortOption(sortBy)
+            for await _ in await NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).values {
+                await self.action(.load)
+            }
             
             logger.debug("lifecycleTask cancelled")
         }

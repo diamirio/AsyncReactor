@@ -74,9 +74,6 @@ struct RepositorySearchView: View {
                     RepositoryDetailView(repository: repository)
                 }
             }
-            .task {
-                await reactor.action(.load)
-            }
         }
     }
 }
