@@ -28,11 +28,6 @@ struct RepositoryItem: View {
                     .font(.body)
             }
         }
-        .navigationDestination(for: Repository.self) { repository in
-            ReactorView(RepositoryDetailReactor()) {
-                RepositoryDetailView(repository: repository)
-            }
-        }
     }
 }
 

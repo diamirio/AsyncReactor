@@ -69,6 +69,11 @@ struct RepositorySearchView: View {
                     }
                 }
             }
+            .navigationDestination(for: Repository.self) { repository in
+                ReactorView(RepositoryDetailReactor()) {
+                    RepositoryDetailView(repository: repository)
+                }
+            }
             .task {
                 await reactor.action(.load)
             }
