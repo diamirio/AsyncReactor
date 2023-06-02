@@ -15,8 +15,8 @@ private let logger = Logger(label: "RepositorySearchReactor")
 enum SortOptions: String, CaseIterable, Identifiable {
     var id: Self { return self }
     
-    case watchers = "watchers"
-    case forks = "forks"
+    case watchers
+    case forks
     
     var displayName: String {
         switch self {
