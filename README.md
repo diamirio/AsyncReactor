@@ -1,6 +1,6 @@
 # AsyncReactor Example
 
-![Tailored Apps Logo](https://www.tailored-apps.com/wp-content/uploads/2015/04/logo_TaioredApps_2x1.png)
+![DIAMIR Logo](https://diamir.io/wp-content/uploads/Horizontal-Logomark-Logotype-Inverted-on-transparent.png)
 
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-FA7343?style=for-the-badge&logo=swift&logoColor=white)
@@ -9,7 +9,6 @@ This is an iOS app template which basically is a small example project to demons
 
 ### Table of Contents
 * [Usage & Notes](#usage_notes)
-* [GitHub Example Description](#example_description)
 * [License](#license)
 
 ## Usage & Notes <a name="usage_notes"></a>
@@ -28,19 +27,6 @@ AsyncReactor is a generic swift protocol which mainly stands for holding the sta
 **Note:** "action()" function is already an async function and all the operations are being executed in a background task. So there is no need to create seperate "Task(s)" for the background operations. 
 
 An example use case for such reactor can be found in the project ([here](https://github.com/diamirio/AsyncReactor/blob/main/Example/AsyncReactorExample/Features/Repository/Search/RepositorySearchReactor.swift))
-
-## Description of the GitHub Search Example <a name="example_description"></a>
-The example app basically uses the GitHub REST API to search repositories across the platform. It consist of two screens; RepositorySearch & RepositoryDetail.
-
-- **Repository Search**
-    RepositorySearchView uses the search endpoint of Github API to list the repositories based on user's search input. ".load" action in the reactor is the place where the network request is executed repositories are retrieved from the backend service. 
-    "query" binding var is annotated with "@ActionBinding" so ".enterQuery" action will be invoked and ".load" action will be called whenever the query changes in the TextField in RepositorySearchView.
-    List of repositories are being sorted by "counts of watchers or forks" chosen by user. Selected SortOption is stored in UserDefaults as key-value pairs ([see the usage here](https://github.com/diamirio/AsyncReactor/blob/main/Example/AsyncReactorExample/Features/Repository/Search/RepositorySearchReactor.swift)). Since the values stored in UserDefaults are stored in the device itself; the values are being restored even when the app is fully stopped.
-
-- **Repository Detail**
-    When a repository selected from the list in RepositorySearchView, the app is navigated to RepositoryDetailView. RepositoryDetail is basically stands for displaying more detail info about the selected repository.
-    Selected repository is defined in the struct to be able to pass it to the view from the list.
-    Detail view also has some additional demonstrations for such native SwiftUI functionalities like long running operations, sheet, url navigation etc. 
 
 ## License <a name="license"></a>
 ```
