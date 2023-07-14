@@ -9,6 +9,8 @@ import Foundation
 import AsyncReactor
 import UIKit
 import Logging
+import Macro
+import SwiftUI
 
 private let logger = Logger(label: "RepositorySearchReactor")
 
@@ -28,7 +30,8 @@ enum SortOptions: String, CaseIterable, Identifiable {
     }
 }
 
-class RepositorySearchReactor: AsyncReactor {
+@Reactor
+class RepositorySearchReactor {
     enum Action {
         case onHidePrivateToggle
         case enterQuery(String)
@@ -44,8 +47,11 @@ class RepositorySearchReactor: AsyncReactor {
         var sortBy: SortOptions = .watchers
     }
     
-    @Published
-    private(set) var state: State
+    @Dependency(\.gitHubApi)
+    var gitHubApi
+    
+    @Dependency(\.managedObjectContext)
+    var hallo
     
     @MainActor
     init(state: State = State()) {
@@ -63,31 +69,31 @@ class RepositorySearchReactor: AsyncReactor {
         }
     }
     
+    @MainActor // NOTE: when adding AsyncReactor conformance via macro, @MainActor is not automatically added apparently...
     func action(_ action: Action) async {
         switch action {
         case .onHidePrivateToggle:
             state.hidePrivate.toggle()
             
         case .enterQuery(let query):
+            print("enter query: \(query)")
             state.query = query
             
             try? await Task.sleep(for: .seconds(1))
             
             guard !Task.isCancelled else { return }
-            
+            print("load")
             await self.action(.load)
         case .load:
             state.isLoading = true
             
             do {
                 let currentQuery = state.query.isEmpty ? "iOS" : state.query
-                let (data, _) = try await URLSession.shared.data(from: URL(string:"https://api.github.com/search/repositories?q=\(currentQuery)")!)
-                let decodedResponse = try JSONDecoder().decode(RepositoriesResponse.self, from: data)
                 
-                state.repositories = decodedResponse.repositories
+                state.repositories = try await gitHubApi!.search(query: currentQuery)
                 state.isLoading = false
                 
-                logger.debug("search repositories success: \(String(describing: decodedResponse.repositories.count))")
+                logger.debug("search repositories success: \(String(describing: state.repositories.count))")
             }
             catch {
                 logger.error("error while searching repositories: \(error)")

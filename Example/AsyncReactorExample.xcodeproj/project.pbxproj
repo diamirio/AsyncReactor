@@ -14,6 +14,8 @@
 		80D30FC62A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D30FC52A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift */; };
 		80E8B9D12A1BAE2800E4B3CC /* RepositorySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8B9D02A1BAE2800E4B3CC /* RepositorySearchView.swift */; };
 		80E8B9D32A1BAEC200E4B3CC /* RepositoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8B9D22A1BAEC200E4B3CC /* RepositoryDetailView.swift */; };
+		B4335C542A5FEAAD001B16EA /* GitHubAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4335C532A5FEAAD001B16EA /* GitHubAPI.swift */; };
+		B43CC1B52A6154E30051AD5B /* Macro in Frameworks */ = {isa = PBXBuildFile; productRef = B43CC1B42A6154E30051AD5B /* Macro */; };
 		B4ECB0B02A1250AE00B0CAAE /* AsyncReactorExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ECB0AF2A1250AE00B0CAAE /* AsyncReactorExampleApp.swift */; };
 		B4ECB0B22A1250AE00B0CAAE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ECB0B12A1250AE00B0CAAE /* ContentView.swift */; };
 		B4ECB0B42A1250AF00B0CAAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4ECB0B32A1250AF00B0CAAE /* Assets.xcassets */; };
@@ -31,6 +33,8 @@
 		80D30FC52A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDescriptionSheet.swift; sourceTree = "<group>"; };
 		80E8B9D02A1BAE2800E4B3CC /* RepositorySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositorySearchView.swift; sourceTree = "<group>"; };
 		80E8B9D22A1BAEC200E4B3CC /* RepositoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDetailView.swift; sourceTree = "<group>"; };
+		B4335C532A5FEAAD001B16EA /* GitHubAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubAPI.swift; sourceTree = "<group>"; };
+		B4335C552A5FF25F001B16EA /* Macro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Macro; path = ../Macro; sourceTree = "<group>"; };
 		B4ECB0AC2A1250AE00B0CAAE /* AsyncReactorExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsyncReactorExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4ECB0AF2A1250AE00B0CAAE /* AsyncReactorExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncReactorExampleApp.swift; sourceTree = "<group>"; };
 		B4ECB0B12A1250AE00B0CAAE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B43CC1B52A6154E30051AD5B /* Macro in Frameworks */,
 				B4ECB0C82A12520700B0CAAE /* Logging in Frameworks */,
 				B4ECB0C12A1250E000B0CAAE /* AsyncReactor in Frameworks */,
 			);
@@ -86,6 +91,7 @@
 				80E8B9D02A1BAE2800E4B3CC /* RepositorySearchView.swift */,
 				80D30FC12A1BBF9A00C653B0 /* RepositoryList.swift */,
 				80D30FC32A1BC07B00C653B0 /* RepositoryItem.swift */,
+				B4335C532A5FEAAD001B16EA /* GitHubAPI.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -103,6 +109,7 @@
 		B4ECB0A32A1250AE00B0CAAE = {
 			isa = PBXGroup;
 			children = (
+				B4335C552A5FF25F001B16EA /* Macro */,
 				B4ECB0BE2A1250D700B0CAAE /* AsyncReactor */,
 				B4ECB0AE2A1250AE00B0CAAE /* AsyncReactorExample */,
 				B4ECB0AD2A1250AE00B0CAAE /* Products */,
@@ -166,6 +173,7 @@
 			packageProductDependencies = (
 				B4ECB0C02A1250E000B0CAAE /* AsyncReactor */,
 				B4ECB0C72A12520700B0CAAE /* Logging */,
+				B43CC1B42A6154E30051AD5B /* Macro */,
 			);
 			productName = AsyncReactorExample;
 			productReference = B4ECB0AC2A1250AE00B0CAAE /* AsyncReactorExample.app */;
@@ -233,6 +241,7 @@
 				B4ECB0C42A1251B500B0CAAE /* RepositorySearchReactor.swift in Sources */,
 				80D30FBE2A1BBD8000C653B0 /* RepositoryDetailReactor.swift in Sources */,
 				80E8B9D12A1BAE2800E4B3CC /* RepositorySearchView.swift in Sources */,
+				B4335C542A5FEAAD001B16EA /* GitHubAPI.swift in Sources */,
 				80D30FC42A1BC07B00C653B0 /* RepositoryItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -456,6 +465,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B43CC1B42A6154E30051AD5B /* Macro */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Macro;
+		};
 		B4ECB0C02A1250E000B0CAAE /* AsyncReactor */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AsyncReactor;
