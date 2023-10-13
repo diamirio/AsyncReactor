@@ -3,7 +3,7 @@ import AsyncReactor
 
 struct ContentView: View {
     var body: some View {
-        RepositorySearchReactorView(RepositorySearchReactor()) {
+        RepositorySearchReactorView {
             RepositorySearchView()
         }
         .environment(\.gitHubApi, GitHubAPI())

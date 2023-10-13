@@ -1,6 +1,8 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
+import AsyncReactor
+
 /// A macro that produces both a value and a string containing the
 /// source code that generated the value. For example,
 ///
@@ -10,7 +12,7 @@
 @freestanding(expression)
 public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "MacroMacros", type: "StringifyMacro")
 
-@attached(conformance)
+@attached(extension, conformances: AsyncReactor)
 @attached(member, names: named(state))
 @attached(peer, names: suffixed(View))
 public macro Reactor() = #externalMacro(module: "MacroMacros", type: "ReactorMacro")
