@@ -107,7 +107,7 @@ struct ReactorLifecycleCancel: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .task {
+            .onAppear {
                 // empty task because when not modifying the content at all, SwiftUI seems to optimise away the modifier
             }
     }
