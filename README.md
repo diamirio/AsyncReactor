@@ -1,8 +1,7 @@
 # AsyncReactor Example
 
-![DIAMIR Logo](https://github.com/diamirio/AsyncReactor/assets/19715246/9ab8747b-6a4a-4acc-8902-acf9d6c77399#gh-light-mode-only)
+![DIAMIR Logo](https://github.com/diamirio/AsyncReactor/assets/19715246/8424fef3-5aeb-4e15-af36-55f1f3fc37b0#gh-light-mode-only)
 ![DIAMIR Logo](https://github.com/diamirio/AsyncReactor/assets/19715246/56eef378-e63e-4732-8710-040d3440afbb#gh-dark-mode-only)
-
 
 
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
