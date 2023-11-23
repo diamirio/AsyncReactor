@@ -26,9 +26,13 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "AsyncReactor",
-            dependencies: []),
+            dependencies: [],
+            path: "Sources"
+        ),
         .testTarget(
             name: "AsyncReactorTests",
-            dependencies: ["AsyncReactor"]),
+            dependencies: ["AsyncReactor"],
+            path: "Tests"
+        ),
     ]
 )
