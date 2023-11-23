@@ -1,8 +1,8 @@
 # AsyncReactor Example
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="[https://raw.githubusercontent.com/stefanjudis/github-light-dark-image-example/main/dark.png](https://github.com/diamirio/AsyncReactor/assets/19715246/56eef378-e63e-4732-8710-040d3440afbb)">
-  <img alt="DIAMIR Logo" src="[https://raw.githubusercontent.com/stefanjudis/github-light-dark-image-example/main/light.png](https://github.com/diamirio/AsyncReactor/assets/19715246/8424fef3-5aeb-4e15-af36-55f1f3fc37b0)">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/diamirio/AsyncReactor/assets/19715246/56eef378-e63e-4732-8710-040d3440afbb">
+  <img alt="DIAMIR Logo" src="https://github.com/diamirio/AsyncReactor/assets/19715246/8424fef3-5aeb-4e15-af36-55f1f3fc37b0">
 </picture>
 
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
