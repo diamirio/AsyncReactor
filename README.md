@@ -13,10 +13,10 @@ AsyncReactor is a reactive architecural pattern to organize your Swift code.
 ## Table of Contents
  - [Usage](#usage)
    - [General](#general)
- - [Integration](#integration)
-   - [State updates](#state-updates)
-   - [Actions](#actions)
-   - [Action Bindings](#action-bindings)
+   - [Integration](#integration)
+     - [State updates](#state-updates)
+     - [Actions](#actions)
+     - [Action Bindings](#action-bindings)
  - [Example ](#example)
    - [License ](#license)
 
