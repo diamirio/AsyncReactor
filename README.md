@@ -8,28 +8,120 @@
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-FA7343?style=for-the-badge&logo=swift&logoColor=white)
 
-This is an iOS app template which basically is a small example project to demonstrate the usage of "AsyncReactor" package and some basic SwiftUI views. 
+AsyncReactor is a reactive architecural pattern to organize your Swift code.
 
-### Table of Contents
-* [Usage & Notes](#usage_notes)
-* [License](#license)
+## Table of Contents
+ - [Usage](#usage)
+   - [General](#general)
+   - [Integration](#integration)
+     - [State updates](#state-updates)
+     - [Actions](#actions)
+     - [Action Bindings](#action-bindings)
+ - [Example ](#example)
+   - [License ](#license)
 
-## Usage & Notes <a name="usage_notes"></a>
-AsyncReactor is a generic swift protocol which mainly stands for holding the state & handling background operations of the related SwiftUI view. Classes to be used as reactor of a view just need to implement the "AsyncReactor" protocol and implement the necessary predefined abstract functions/variables.
+## Usage<a name="usage"></a>
+### General
+AsyncReactor is a reactive architecural pattern. The main component is an `AsyncReactor`. This `AsyncReactor` holds the `State` as well as the `Actions`.
 
-- Each SwiftUI view which needs to hold/observe a variable/state or needs to do some background operations should have a "Reactor" class defined in the SwiftUI view struct as "@EnvironmentObject".
-- Each UI or background operations should be defined in "Action" enum in the reactor. "action()" function is the place where actual operations of these predefined actions are defined and executed. Each case in the Actions enum should be defined through a "switch" statement spesifically.
-- Reactor State:
-    - All the data, variables etc. should be placed in "State" struct.
-    - Variables in the struct should have a default value so it can be initialized in the init block of the reactor.
-    - There should be a state variable which holds the current state of the reactor. State var should be "Published" so the related SwiftUI view is notified whenever the data changed in the reactor. 
-    - Setter of the reactor state should be **private** so it must be editable only from the reactor itself.
-- "send()" function can be also used to invoke an action outside in non-background context.
-- Variables which will be used as a "@Binding" variable in SwiftUI views can be annotated with "@ActionBinding" with an action in the reactor so the state will be updated automatically when this binding variable is reached. Various example use cases can be found in [RepositorySearchView](https://github.com/diamirio/AsyncReactor/blob/main/Example/AsyncReactorExample/Features/Repository/Search/RepositorySearchView.swift)
+```Swift
+class RepositorySearchReactor: AsyncReactor {
+    enum Action {
+        ...
+    }
+    
+    struct State {
+        ...
+    }
+    
+    @Published
+    private(set) var state: State
 
-**Note:** "action()" function is already an async function and all the operations are being executed in a background task. So there is no need to create seperate "Task(s)" for the background operations. 
+    func action(_ action: Action) async { 
+        ...
+    }
+}
+```
 
-An example use case for such reactor can be found in the project ([here](https://github.com/diamirio/AsyncReactor/blob/main/Example/AsyncReactorExample/Features/Repository/Search/RepositorySearchReactor.swift))
+## Integration
+The `AsyncReactor` is provided to the child view as an `EnvironmentObject`. This is set by the `ReactorView`.
+```Swift
+ReactorView(RepositorySearchReactor()) {
+    RepositorySearchView()
+}
+```
+
+Now the reactor can simply be used in the SwiftUI view as follows.
+```Swift
+struct RepositorySearchView: View {
+
+    @EnvironmentObject
+    private var reactor: RepositorySearchReactor
+
+    var body: some View { 
+        ... 
+    }
+}
+```
+
+### State updates
+Whenever the `State` in the reactor changes, the view will updated accordingly. It is also possibel to bind the `State`.
+
+```Swift
+var body: some View { 
+    Text(reactor.state.name)
+}
+``````
+
+
+### Actions
+Actions are used to trigger a behaviour in our reactor. 
+
+```Swift
+var body: some View { 
+    Button("Click me") {
+        reactor.action(.buttonClick)
+    }
+}
+``````
+
+
+### Action Bindings
+Action bindings enable us to bind values of the state in our view.
+
+```Swift
+struct RepositorySearchView: View {
+
+    ...
+
+    @ActionBinding(RepositorySearchReactor.self, 
+                   keyPath: \.hidePrivate,
+                   action: RepositorySearchReactor.Action.onHidePrivateToggle)
+    private var hidePrivate: Bool
+
+    var body: some View { 
+        Toggle("Hide Private Repos", isOn: $hidePrivate)
+    }
+}
+
+class RepositorySearchReactor: AsyncReactor {
+  
+    ...
+
+    func action(_ action: Action) async {
+        switch action {
+        case .onHidePrivateToggle:
+            state.hidePrivate.toggle()
+
+        ...
+
+        }
+    }
+}
+```
+
+## Example <a name="example"></a>
+An example can be found in the [Example](./Example/AsyncReactorExample) folder.
 
 ## License <a name="license"></a>
 ```
