@@ -96,7 +96,7 @@ struct RepositorySearchView: View {
 
     @ActionBinding(RepositorySearchReactor.self, 
                    keyPath: \.hidePrivate,
-                   action: RepositorySearchReactor.Action.onHidePrivateToggle)
+                   action: .onHidePrivateToggle)
     private var hidePrivate: Bool
 
     var body: some View { 
