@@ -36,6 +36,10 @@ class RepositorySearchReactor: AsyncReactor {
         case onSortOptionSelected(SortOptions)
     }
     
+    enum SyncAction {
+        case toggleHidePrivate
+    }
+    
     struct State {
         var hidePrivate = false
         var query = ""
@@ -92,9 +96,17 @@ class RepositorySearchReactor: AsyncReactor {
             catch {
                 logger.error("error while searching repositories: \(error)")
             }
+            
         case .onSortOptionSelected(let option):
             state.sortBy = option
-            UserDefaults.standard.set(state.sortBy.rawValue, forKey: "sortBy")
+            UserDefaults.standard.set(option.rawValue, forKey: "sortBy")
+        }
+    }
+    
+    func action(_ action: SyncAction) {
+        switch action {
+        case .toggleHidePrivate:
+            state.hidePrivate.toggle()
         }
     }
     
