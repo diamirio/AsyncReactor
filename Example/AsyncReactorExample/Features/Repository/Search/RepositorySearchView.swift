@@ -13,7 +13,7 @@ struct RepositorySearchView: View {
     @EnvironmentObject
     private var reactor: RepositorySearchReactor
     
-    @ActionBinding(RepositorySearchReactor.self, keyPath: \.hidePrivate, action: RepositorySearchReactor.Action.onHidePrivateToggle)
+    @ActionBinding(RepositorySearchReactor.self, keyPath: \.hidePrivate, action: RepositorySearchReactor.SyncAction.toggleHidePrivate)
     private var hidePrivate: Bool
     
     @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, cancelId: .init(id: "enterQuery", mode: .inFlight), action: RepositorySearchReactor.Action.enterQuery)

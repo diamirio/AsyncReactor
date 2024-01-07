@@ -10,6 +10,7 @@ import Foundation
 @dynamicMemberLookup
 public protocol AsyncReactor: ObservableObject {
     associatedtype Action
+    associatedtype SyncAction = Never
     associatedtype State
     
     @MainActor
@@ -18,6 +19,9 @@ public protocol AsyncReactor: ObservableObject {
     @MainActor
     func action(_ action: Action) async
     
+    @MainActor
+    func action(_ action: SyncAction)
+    
     subscript<Value>(dynamicMember keyPath: KeyPath<State, Value>) -> Value { get }
 }
 
@@ -25,6 +29,12 @@ extension AsyncReactor {
     @MainActor
     public func send(_ action: Action) {
         Task { await self.action(action) }
+    }
+}
+
+extension AsyncReactor where SyncAction == Never {
+    public func action(_ action: SyncAction) {
+        
     }
 }
 
