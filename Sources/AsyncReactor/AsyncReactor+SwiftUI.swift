@@ -93,10 +93,10 @@ public struct ActionBinding<Reactor: AsyncReactor, Action, Value>: DynamicProper
                 target.wrappedValue.bind(keyPath, action: action as! (Value) -> Reactor.SyncAction)
             }
             
-            if Action.self == Reactor.Action.self {
-                return bindAction()
-            } else if Action.self == Reactor.SyncAction.self {
+            if Action.self == Reactor.SyncAction.self {
                 return bindSyncAction()
+            } else if Action.self == Reactor.Action.self {
+                return bindAction()
             } else {
                 fatalError("this should never happen :)")
             }
