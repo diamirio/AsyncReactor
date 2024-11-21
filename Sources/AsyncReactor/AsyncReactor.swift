@@ -7,19 +7,17 @@
 
 import Foundation
 
+@MainActor
 @dynamicMemberLookup
 public protocol AsyncReactor: ObservableObject {
     associatedtype Action
     associatedtype SyncAction = Never
     associatedtype State
     
-    @MainActor
     var state: State { get }
     
-    @MainActor
     func action(_ action: Action) async
     
-    @MainActor
     func action(_ action: SyncAction)
     
     subscript<Value>(dynamicMember keyPath: KeyPath<State, Value>) -> Value { get }

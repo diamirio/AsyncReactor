@@ -51,7 +51,6 @@ class RepositorySearchReactor: AsyncReactor {
     @Published
     private(set) var state: State
     
-    @MainActor
     init(state: State = State()) {
         self.state = state
         
@@ -59,7 +58,7 @@ class RepositorySearchReactor: AsyncReactor {
         self.handleSortOption(sortBy)
         
         lifecycleTask {
-            for await _ in await NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).values {
+            for await _ in NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).values {
                 await self.action(.load)
             }
             
@@ -110,7 +109,6 @@ class RepositorySearchReactor: AsyncReactor {
         }
     }
     
-    @MainActor
     private func handleSortOption(_ value: String) {
         state.sortBy = SortOptions(rawValue: value)!
     }
