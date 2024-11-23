@@ -14,6 +14,8 @@
 		80D30FC62A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D30FC52A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift */; };
 		80E8B9D12A1BAE2800E4B3CC /* RepositorySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8B9D02A1BAE2800E4B3CC /* RepositorySearchView.swift */; };
 		80E8B9D32A1BAEC200E4B3CC /* RepositoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8B9D22A1BAEC200E4B3CC /* RepositoryDetailView.swift */; };
+		B4A9DDD22CF23EF2008CA694 /* Reactor in Frameworks */ = {isa = PBXBuildFile; productRef = B4A9DDD12CF23EF2008CA694 /* Reactor */; };
+		B4C46AC02CEF7CA300CC2BE7 /* ObservableTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C46ABF2CEF7CA300CC2BE7 /* ObservableTestView.swift */; };
 		B4ECB0B02A1250AE00B0CAAE /* AsyncReactorExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ECB0AF2A1250AE00B0CAAE /* AsyncReactorExampleApp.swift */; };
 		B4ECB0B22A1250AE00B0CAAE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ECB0B12A1250AE00B0CAAE /* ContentView.swift */; };
 		B4ECB0B42A1250AF00B0CAAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4ECB0B32A1250AF00B0CAAE /* Assets.xcassets */; };
@@ -31,6 +33,7 @@
 		80D30FC52A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDescriptionSheet.swift; sourceTree = "<group>"; };
 		80E8B9D02A1BAE2800E4B3CC /* RepositorySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositorySearchView.swift; sourceTree = "<group>"; };
 		80E8B9D22A1BAEC200E4B3CC /* RepositoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDetailView.swift; sourceTree = "<group>"; };
+		B4C46ABF2CEF7CA300CC2BE7 /* ObservableTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTestView.swift; sourceTree = "<group>"; };
 		B4ECB0AC2A1250AE00B0CAAE /* AsyncReactorExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsyncReactorExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4ECB0AF2A1250AE00B0CAAE /* AsyncReactorExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncReactorExampleApp.swift; sourceTree = "<group>"; };
 		B4ECB0B12A1250AE00B0CAAE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4A9DDD22CF23EF2008CA694 /* Reactor in Frameworks */,
 				B4ECB0C82A12520700B0CAAE /* Logging in Frameworks */,
 				B4ECB0C12A1250E000B0CAAE /* AsyncReactor in Frameworks */,
 			);
@@ -125,6 +129,7 @@
 				809CDDE42A1B9591001D17BE /* Models */,
 				B4ECB0AF2A1250AE00B0CAAE /* AsyncReactorExampleApp.swift */,
 				B4ECB0B12A1250AE00B0CAAE /* ContentView.swift */,
+				B4C46ABF2CEF7CA300CC2BE7 /* ObservableTestView.swift */,
 				B4ECB0B32A1250AF00B0CAAE /* Assets.xcassets */,
 				B4ECB0B52A1250AF00B0CAAE /* AsyncReactorExample.entitlements */,
 				B4ECB0B62A1250AF00B0CAAE /* Preview Content */,
@@ -166,6 +171,7 @@
 			packageProductDependencies = (
 				B4ECB0C02A1250E000B0CAAE /* AsyncReactor */,
 				B4ECB0C72A12520700B0CAAE /* Logging */,
+				B4A9DDD12CF23EF2008CA694 /* Reactor */,
 			);
 			productName = AsyncReactorExample;
 			productReference = B4ECB0AC2A1250AE00B0CAAE /* AsyncReactorExample.app */;
@@ -234,6 +240,7 @@
 				80D30FBE2A1BBD8000C653B0 /* RepositoryDetailReactor.swift in Sources */,
 				80E8B9D12A1BAE2800E4B3CC /* RepositorySearchView.swift in Sources */,
 				80D30FC42A1BC07B00C653B0 /* RepositoryItem.swift in Sources */,
+				B4C46AC02CEF7CA300CC2BE7 /* ObservableTestView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +465,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B4A9DDD12CF23EF2008CA694 /* Reactor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Reactor;
+		};
 		B4ECB0C02A1250E000B0CAAE /* AsyncReactor */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AsyncReactor;
