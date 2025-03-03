@@ -13,13 +13,26 @@ struct RepositorySearchView: View {
     @EnvironmentObject
     private var reactor: RepositorySearchReactor
     
-    @ActionBinding(RepositorySearchReactor.self, keyPath: \.hidePrivate, action: RepositorySearchReactor.SyncAction.toggleHidePrivate)
+    @ActionBinding(
+        RepositorySearchReactor.self,
+        keyPath: \.hidePrivate,
+        action: RepositorySearchReactor.SyncAction.toggleHidePrivate
+    )
     private var hidePrivate: Bool
     
-    @ActionBinding(RepositorySearchReactor.self, keyPath: \.query, cancelId: .init(id: "enterQuery", mode: .inFlight), action: RepositorySearchReactor.Action.enterQuery)
+    @ActionBinding(
+        RepositorySearchReactor.self,
+        keyPath: \.query,
+        cancelId: .init(id: "enterQuery", mode: .inFlight),
+        action: RepositorySearchReactor.AsyncAction.enterQuery
+    )
     private var query: String
     
-    @ActionBinding(RepositorySearchReactor.self, keyPath: \.sortBy, action: RepositorySearchReactor.Action.onSortOptionSelected)
+    @ActionBinding(
+        RepositorySearchReactor.self,
+        keyPath: \.sortBy,
+        action: RepositorySearchReactor.AsyncAction.onSortOptionSelected
+    )
     private var sortOption: SortOptions
     
     var body: some View {

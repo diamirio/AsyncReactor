@@ -10,13 +10,13 @@ import Foundation
 @MainActor
 @dynamicMemberLookup
 public protocol ReactorBase: AnyObject {
-    associatedtype Action = Never
+    associatedtype AsyncAction = Never
     associatedtype SyncAction = Never
     associatedtype State
     
     var state: State { get }
     
-    func action(_ action: Action) async
+    func action(_ action: AsyncAction) async
     
     func action(_ action: SyncAction)
     
@@ -25,13 +25,13 @@ public protocol ReactorBase: AnyObject {
 
 extension ReactorBase {
     @MainActor
-    public func send(_ action: Action) {
+    public func send(_ action: AsyncAction) {
         Task { await self.action(action) }
     }
 }
 
-extension ReactorBase where Action == Never {
-    public func action(_ action: Action) async {
+extension ReactorBase where AsyncAction == Never {
+    public func action(_ action: AsyncAction) async {
         
     }
 }
@@ -91,7 +91,7 @@ struct TaskKey: Hashable {
 
 extension ReactorBase {
     @MainActor
-    public func action(_ action: Action, id: CancelId) async {
+    public func action(_ action: AsyncAction, id: CancelId) async {
         let key = TaskKey(reactor: self, id: id)
         
         if id.mode.contains(.inFlight) {
@@ -111,7 +111,7 @@ extension ReactorBase {
         }
     }
     
-    public func send(_ action: Action, id: CancelId) {
+    public func send(_ action: AsyncAction, id: CancelId) {
         Task { await self.action(action, id: id) }
     }
     

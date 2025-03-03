@@ -22,25 +22,43 @@ public struct ActionBinding<R: Reactor, Action, Value>: DynamicProperty {
     
     let cancelId: CancelId?
     
-    public init(_ reactorType: R.Type, keyPath: KeyPath<R.State, Value>, cancelId: CancelId? = nil, action: @escaping (Value) -> R.Action) where Action == R.Action {
+    public init(
+        _ reactorType: R.Type,
+        keyPath: KeyPath<R.State, Value>,
+        cancelId: CancelId? = nil,
+        action: @escaping (Value) -> R.AsyncAction
+    ) where Action == R.AsyncAction {
         target = Environment(R.self)
         self.keyPath = keyPath
         self.action = action
         self.cancelId = cancelId
     }
     
-    public init(_ reactorType: R.Type, keyPath: KeyPath<R.State, Value>, cancelId: CancelId? = nil, action: @escaping @autoclosure () -> R.Action) where Action == R.Action {
+    public init(
+        _ reactorType: R.Type,
+        keyPath: KeyPath<R.State, Value>,
+        cancelId: CancelId? = nil,
+        action: @escaping @autoclosure () -> R.AsyncAction
+    ) where Action == R.AsyncAction {
         self.init(reactorType, keyPath: keyPath, cancelId: cancelId, action: { _ in action() })
     }
     
-    public init(_ reactorType: R.Type, keyPath: KeyPath<R.State, Value>, action: @escaping (Value) -> R.SyncAction) where Action == R.SyncAction {
+    public init(
+        _ reactorType: R.Type,
+        keyPath: KeyPath<R.State, Value>,
+        action: @escaping (Value) -> R.SyncAction
+    ) where Action == R.SyncAction {
         target = Environment(R.self)
         self.keyPath = keyPath
         self.action = action
         cancelId = nil
     }
     
-    public init(_ reactorType: R.Type, keyPath: KeyPath<R.State, Value>, action: @escaping @autoclosure () -> R.SyncAction) where Action == R.SyncAction {
+    public init(
+        _ reactorType: R.Type,
+        keyPath: KeyPath<R.State, Value>,
+        action: @escaping @autoclosure () -> R.SyncAction
+    ) where Action == R.SyncAction {
         self.init(reactorType, keyPath: keyPath, action: { _ in action() })
     }
     
@@ -52,7 +70,7 @@ public struct ActionBinding<R: Reactor, Action, Value>: DynamicProperty {
     public var projectedValue: Binding<Value> {
         get {
             func bindAction() -> Binding<Value> {
-                target.wrappedValue.bind(keyPath, cancelId: cancelId, action: action as! (Value) -> R.Action)
+                target.wrappedValue.bind(keyPath, cancelId: cancelId, action: action as! (Value) -> R.AsyncAction)
             }
             
             func bindSyncAction() -> Binding<Value> {
@@ -61,7 +79,7 @@ public struct ActionBinding<R: Reactor, Action, Value>: DynamicProperty {
             
             if Action.self == R.SyncAction.self {
                 return bindSyncAction()
-            } else if Action.self == R.Action.self {
+            } else if Action.self == R.AsyncAction.self {
                 return bindAction()
             } else {
                 fatalError("this should never happen :)")
@@ -78,7 +96,11 @@ public struct ReactorView<Content: View, R: Reactor>: View {
     @State
     private var reactor: R
     
-    public init(_ reactor: @escaping @autoclosure () -> R, definesLifecycle: Bool = true, @ViewBuilder content: () -> Content) {
+    public init(
+        _ reactor: @escaping @autoclosure () -> R,
+        definesLifecycle: Bool = true,
+        @ViewBuilder content: () -> Content
+    ) {
         _reactor = State(initialValue: reactor())
         self.content = content()
         self.definesLifecycle = definesLifecycle
