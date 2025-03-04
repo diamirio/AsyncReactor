@@ -25,6 +25,8 @@ struct RepositorySearchView: View {
     var body: some View {
         NavigationStack {
             List {
+                TextField("", text: $query)
+                
                 Toggle("Hide Private Repos", isOn: $hidePrivate)
                 
                 if reactor.isLoading {
@@ -57,7 +59,7 @@ struct RepositorySearchView: View {
             .refreshable {
                 reactor.send(.load)
             }
-            .searchable(text: $query)
+//            .searchable(text: $query)
             .toolbar {
                 ToolbarItem {
                     Menu("Sort By") {
