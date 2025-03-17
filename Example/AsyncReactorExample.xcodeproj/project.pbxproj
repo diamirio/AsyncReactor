@@ -3,49 +3,30 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		809CDDE62A1B959D001D17BE /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809CDDE52A1B959D001D17BE /* Repository.swift */; };
-		80D30FBE2A1BBD8000C653B0 /* RepositoryDetailReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D30FBD2A1BBD8000C653B0 /* RepositoryDetailReactor.swift */; };
-		80D30FC22A1BBF9A00C653B0 /* RepositoryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D30FC12A1BBF9A00C653B0 /* RepositoryList.swift */; };
-		80D30FC42A1BC07B00C653B0 /* RepositoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D30FC32A1BC07B00C653B0 /* RepositoryItem.swift */; };
-		80D30FC62A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D30FC52A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift */; };
-		80E8B9D12A1BAE2800E4B3CC /* RepositorySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8B9D02A1BAE2800E4B3CC /* RepositorySearchView.swift */; };
-		80E8B9D32A1BAEC200E4B3CC /* RepositoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8B9D22A1BAEC200E4B3CC /* RepositoryDetailView.swift */; };
-		B4ECB0B02A1250AE00B0CAAE /* AsyncReactorExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ECB0AF2A1250AE00B0CAAE /* AsyncReactorExampleApp.swift */; };
-		B4ECB0B22A1250AE00B0CAAE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ECB0B12A1250AE00B0CAAE /* ContentView.swift */; };
-		B4ECB0B42A1250AF00B0CAAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4ECB0B32A1250AF00B0CAAE /* Assets.xcassets */; };
-		B4ECB0B82A1250AF00B0CAAE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4ECB0B72A1250AF00B0CAAE /* Preview Assets.xcassets */; };
+		B4A9DDD22CF23EF2008CA694 /* Reactor in Frameworks */ = {isa = PBXBuildFile; productRef = B4A9DDD12CF23EF2008CA694 /* Reactor */; };
 		B4ECB0C12A1250E000B0CAAE /* AsyncReactor in Frameworks */ = {isa = PBXBuildFile; productRef = B4ECB0C02A1250E000B0CAAE /* AsyncReactor */; };
-		B4ECB0C42A1251B500B0CAAE /* RepositorySearchReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ECB0C22A1251B500B0CAAE /* RepositorySearchReactor.swift */; };
 		B4ECB0C82A12520700B0CAAE /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = B4ECB0C72A12520700B0CAAE /* Logging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		809CDDE52A1B959D001D17BE /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		80D30FBD2A1BBD8000C653B0 /* RepositoryDetailReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDetailReactor.swift; sourceTree = "<group>"; };
-		80D30FC12A1BBF9A00C653B0 /* RepositoryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryList.swift; sourceTree = "<group>"; };
-		80D30FC32A1BC07B00C653B0 /* RepositoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryItem.swift; sourceTree = "<group>"; };
-		80D30FC52A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDescriptionSheet.swift; sourceTree = "<group>"; };
-		80E8B9D02A1BAE2800E4B3CC /* RepositorySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositorySearchView.swift; sourceTree = "<group>"; };
-		80E8B9D22A1BAEC200E4B3CC /* RepositoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDetailView.swift; sourceTree = "<group>"; };
 		B4ECB0AC2A1250AE00B0CAAE /* AsyncReactorExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsyncReactorExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B4ECB0AF2A1250AE00B0CAAE /* AsyncReactorExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncReactorExampleApp.swift; sourceTree = "<group>"; };
-		B4ECB0B12A1250AE00B0CAAE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		B4ECB0B32A1250AF00B0CAAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B4ECB0B52A1250AF00B0CAAE /* AsyncReactorExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AsyncReactorExample.entitlements; sourceTree = "<group>"; };
-		B4ECB0B72A1250AF00B0CAAE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B4ECB0BE2A1250D700B0CAAE /* AsyncReactor */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AsyncReactor; path = ..; sourceTree = "<group>"; };
-		B4ECB0C22A1251B500B0CAAE /* RepositorySearchReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositorySearchReactor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		82F565F82D74885200C72CA5 /* AsyncReactorExample */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AsyncReactorExample; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B4ECB0A92A1250AE00B0CAAE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4A9DDD22CF23EF2008CA694 /* Reactor in Frameworks */,
 				B4ECB0C82A12520700B0CAAE /* Logging in Frameworks */,
 				B4ECB0C12A1250E000B0CAAE /* AsyncReactor in Frameworks */,
 			);
@@ -54,57 +35,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		809CDDE42A1B9591001D17BE /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				809CDDE52A1B959D001D17BE /* Repository.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		80E8B9CA2A1BAC2200E4B3CC /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				80E8B9CB2A1BAC4900E4B3CC /* Repository */,
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
-		80E8B9CB2A1BAC4900E4B3CC /* Repository */ = {
-			isa = PBXGroup;
-			children = (
-				80E8B9D42A1BBB1D00E4B3CC /* Detail */,
-				80E8B9CD2A1BAC5F00E4B3CC /* Search */,
-			);
-			path = Repository;
-			sourceTree = "<group>";
-		};
-		80E8B9CD2A1BAC5F00E4B3CC /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				B4ECB0C22A1251B500B0CAAE /* RepositorySearchReactor.swift */,
-				80E8B9D02A1BAE2800E4B3CC /* RepositorySearchView.swift */,
-				80D30FC12A1BBF9A00C653B0 /* RepositoryList.swift */,
-				80D30FC32A1BC07B00C653B0 /* RepositoryItem.swift */,
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
-		80E8B9D42A1BBB1D00E4B3CC /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				80E8B9D22A1BAEC200E4B3CC /* RepositoryDetailView.swift */,
-				80D30FBD2A1BBD8000C653B0 /* RepositoryDetailReactor.swift */,
-				80D30FC52A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
 		B4ECB0A32A1250AE00B0CAAE = {
 			isa = PBXGroup;
 			children = (
 				B4ECB0BE2A1250D700B0CAAE /* AsyncReactor */,
-				B4ECB0AE2A1250AE00B0CAAE /* AsyncReactorExample */,
+				82F565F82D74885200C72CA5 /* AsyncReactorExample */,
 				B4ECB0AD2A1250AE00B0CAAE /* Products */,
 				B4ECB0BF2A1250E000B0CAAE /* Frameworks */,
 			);
@@ -116,28 +51,6 @@
 				B4ECB0AC2A1250AE00B0CAAE /* AsyncReactorExample.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B4ECB0AE2A1250AE00B0CAAE /* AsyncReactorExample */ = {
-			isa = PBXGroup;
-			children = (
-				80E8B9CA2A1BAC2200E4B3CC /* Features */,
-				809CDDE42A1B9591001D17BE /* Models */,
-				B4ECB0AF2A1250AE00B0CAAE /* AsyncReactorExampleApp.swift */,
-				B4ECB0B12A1250AE00B0CAAE /* ContentView.swift */,
-				B4ECB0B32A1250AF00B0CAAE /* Assets.xcassets */,
-				B4ECB0B52A1250AF00B0CAAE /* AsyncReactorExample.entitlements */,
-				B4ECB0B62A1250AF00B0CAAE /* Preview Content */,
-			);
-			path = AsyncReactorExample;
-			sourceTree = "<group>";
-		};
-		B4ECB0B62A1250AF00B0CAAE /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				B4ECB0B72A1250AF00B0CAAE /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		B4ECB0BF2A1250E000B0CAAE /* Frameworks */ = {
@@ -162,10 +75,14 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				82F565F82D74885200C72CA5 /* AsyncReactorExample */,
+			);
 			name = AsyncReactorExample;
 			packageProductDependencies = (
 				B4ECB0C02A1250E000B0CAAE /* AsyncReactor */,
 				B4ECB0C72A12520700B0CAAE /* Logging */,
+				B4A9DDD12CF23EF2008CA694 /* Reactor */,
 			);
 			productName = AsyncReactorExample;
 			productReference = B4ECB0AC2A1250AE00B0CAAE /* AsyncReactorExample.app */;
@@ -212,8 +129,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4ECB0B82A1250AF00B0CAAE /* Preview Assets.xcassets in Resources */,
-				B4ECB0B42A1250AF00B0CAAE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,16 +139,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4ECB0B22A1250AE00B0CAAE /* ContentView.swift in Sources */,
-				80D30FC22A1BBF9A00C653B0 /* RepositoryList.swift in Sources */,
-				80D30FC62A1CDBC200C653B0 /* RepositoryDescriptionSheet.swift in Sources */,
-				809CDDE62A1B959D001D17BE /* Repository.swift in Sources */,
-				B4ECB0B02A1250AE00B0CAAE /* AsyncReactorExampleApp.swift in Sources */,
-				80E8B9D32A1BAEC200E4B3CC /* RepositoryDetailView.swift in Sources */,
-				B4ECB0C42A1251B500B0CAAE /* RepositorySearchReactor.swift in Sources */,
-				80D30FBE2A1BBD8000C653B0 /* RepositoryDetailReactor.swift in Sources */,
-				80E8B9D12A1BAE2800E4B3CC /* RepositorySearchView.swift in Sources */,
-				80D30FC42A1BC07B00C653B0 /* RepositoryItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +363,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B4A9DDD12CF23EF2008CA694 /* Reactor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Reactor;
+		};
 		B4ECB0C02A1250E000B0CAAE /* AsyncReactor */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AsyncReactor;

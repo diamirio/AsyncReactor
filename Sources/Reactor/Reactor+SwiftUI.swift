@@ -1,8 +1,8 @@
 //
-//  AsyncReactor+SwiftUI.swift
-//  
+//  Reactor+SwiftUI.swift
+//  AsyncReactor
 //
-//  Created by Dominik Arnhof on 14.04.23.
+//  Created by Dominik Arnhof on 23.11.24.
 //
 
 #if canImport(SwiftUI)
@@ -11,35 +11,36 @@ import ReactorBase
 
 /// Property wrapper to get a binding to a state keyPath and a associated Action
 /// Can be used and behaves like the `@State` property wrapper
+@available(iOS 17.0, tvOS 17.0, watchOS 10.0, macOS 14.0, *)
 @MainActor
 @propertyWrapper
-public struct ActionBinding<Reactor: AsyncReactor, Action, Value>: DynamicProperty {
-    let target: EnvironmentObject<Reactor>
+public struct ActionBinding<R: Reactor, Action, Value>: DynamicProperty {
+    let target: Environment<R>
     
-    let keyPath: KeyPath<Reactor.State, Value>
+    let keyPath: KeyPath<R.State, Value>
     let action: (Value) -> Action
     
     let cancelId: CancelId?
     
-    public init(_ reactorType: Reactor.Type, keyPath: KeyPath<Reactor.State, Value>, cancelId: CancelId? = nil, action: @escaping (Value) -> Reactor.Action) where Action == Reactor.Action {
-        target = EnvironmentObject()
+    public init(_ reactorType: R.Type, keyPath: KeyPath<R.State, Value>, cancelId: CancelId? = nil, action: @escaping (Value) -> R.Action) where Action == R.Action {
+        target = Environment(R.self)
         self.keyPath = keyPath
         self.action = action
         self.cancelId = cancelId
     }
     
-    public init(_ reactorType: Reactor.Type, keyPath: KeyPath<Reactor.State, Value>, cancelId: CancelId? = nil, action: @escaping @autoclosure () -> Reactor.Action) where Action == Reactor.Action {
+    public init(_ reactorType: R.Type, keyPath: KeyPath<R.State, Value>, cancelId: CancelId? = nil, action: @escaping @autoclosure () -> R.Action) where Action == R.Action {
         self.init(reactorType, keyPath: keyPath, cancelId: cancelId, action: { _ in action() })
     }
     
-    public init(_ reactorType: Reactor.Type, keyPath: KeyPath<Reactor.State, Value>, action: @escaping (Value) -> Reactor.SyncAction) where Action == Reactor.SyncAction {
-        target = EnvironmentObject()
+    public init(_ reactorType: R.Type, keyPath: KeyPath<R.State, Value>, action: @escaping (Value) -> R.SyncAction) where Action == R.SyncAction {
+        target = Environment(R.self)
         self.keyPath = keyPath
         self.action = action
         cancelId = nil
     }
     
-    public init(_ reactorType: Reactor.Type, keyPath: KeyPath<Reactor.State, Value>, action: @escaping @autoclosure () -> Reactor.SyncAction) where Action == Reactor.SyncAction {
+    public init(_ reactorType: R.Type, keyPath: KeyPath<R.State, Value>, action: @escaping @autoclosure () -> R.SyncAction) where Action == R.SyncAction {
         self.init(reactorType, keyPath: keyPath, action: { _ in action() })
     }
     
@@ -51,16 +52,16 @@ public struct ActionBinding<Reactor: AsyncReactor, Action, Value>: DynamicProper
     public var projectedValue: Binding<Value> {
         get {
             func bindAction() -> Binding<Value> {
-                target.wrappedValue.bind(keyPath, cancelId: cancelId, action: action as! (Value) -> Reactor.Action)
+                target.wrappedValue.bind(keyPath, cancelId: cancelId, action: action as! (Value) -> R.Action)
             }
             
             func bindSyncAction() -> Binding<Value> {
-                target.wrappedValue.bind(keyPath, action: action as! (Value) -> Reactor.SyncAction)
+                target.wrappedValue.bind(keyPath, action: action as! (Value) -> R.SyncAction)
             }
             
-            if Action.self == Reactor.SyncAction.self {
+            if Action.self == R.SyncAction.self {
                 return bindSyncAction()
-            } else if Action.self == Reactor.Action.self {
+            } else if Action.self == R.Action.self {
                 return bindAction()
             } else {
                 fatalError("this should never happen :)")
@@ -69,22 +70,23 @@ public struct ActionBinding<Reactor: AsyncReactor, Action, Value>: DynamicProper
     }
 }
 
-public struct ReactorView<Content: View, R: AsyncReactor>: View {
+@available(iOS 17.0, tvOS 17.0, watchOS 10.0, macOS 14.0, *)
+public struct ReactorView<Content: View, R: Reactor>: View {
     let content: Content
     let definesLifecycle: Bool
     
-    @StateObject
+    @State
     private var reactor: R
     
     public init(_ reactor: @escaping @autoclosure () -> R, definesLifecycle: Bool = true, @ViewBuilder content: () -> Content) {
-        _reactor = StateObject(wrappedValue: reactor())
+        _reactor = State(initialValue: reactor())
         self.content = content()
         self.definesLifecycle = definesLifecycle
     }
     
     public var body: some View {
         content
-            .environmentObject(reactor)
+            .environment(reactor)
             .reactorLifecycle(definesLifecycle ? reactor : nil)
     }
 }
