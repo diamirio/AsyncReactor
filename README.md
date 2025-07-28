@@ -30,7 +30,7 @@ AsyncReactor is a reactive architecural pattern. The main component is an `Async
 
 With iOS 17 and later, we introduced the new **`Reactor`** package, which includes a protocol also named `Reactor`.
 
-Thanks to the new `@Observable` macro in Swift, there’s no longer the need to explicitly mark the `State` as `@published`. By addibg the `@Observable` macro to your reactor class, the entire class is now automatically observable. If you want to exclude specific properties from observation, you can use the `@ObservationIgnored` macro.
+Thanks to the new `@Observable` macro in Swift, there’s no longer the need to explicitly mark the `State` as `@Published`. By addibg the `@Observable` macro to your reactor class, the entire class is now automatically observable. If you want to exclude specific properties from observation, you can use the `@ObservationIgnored` macro.
 
 The way actions are handled remains the same as before — simply define an `Action` enum and implement the `action(_:)` method asynchronously.
 
