@@ -13,8 +13,8 @@ AsyncReactor is a reactive architecural pattern to organize your Swift code.
 ## Table of Contents
  - [Usage](#usage)
    - [General](#general)
-   - [Reactor Package (iOS 17+)](#-reactor-package-ios-17)
-   - [AsyncReactor Package (iOS <17)](#-asyncReactor-package-ios)
+   - [Reactor Package (iOS 17+)](#reactor-package-ios-17)
+   - [AsyncReactor Package (iOS <17)](#asyncreactor-package-ios-17)
    - [Integration](#integration)
      - [State updates](#state-updates)
      - [Actions](#actions)
@@ -26,7 +26,7 @@ AsyncReactor is a reactive architecural pattern to organize your Swift code.
 ### General
 AsyncReactor is a reactive architecural pattern. The main component is an `AsyncReactor`. This `AsyncReactor` holds the `State` as well as the `Actions`.
 
-## 🚀 Reactor Package (iOS 17+)
+### Reactor Package (iOS 17+)
 
 With iOS 17 and later, we introduced the new **`Reactor`** package, which includes a protocol also named `Reactor`.
 
