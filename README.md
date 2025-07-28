@@ -13,6 +13,8 @@ AsyncReactor is a reactive architecural pattern to organize your Swift code.
 ## Table of Contents
  - [Usage](#usage)
    - [General](#general)
+   - [Reactor Package (iOS 17+)](#reactor-package-ios-17)
+   - [AsyncReactor Package (iOS <17)](#asyncreactor-package-ios-17)
    - [Integration](#integration)
      - [State updates](#state-updates)
      - [Actions](#actions)
@@ -23,6 +25,57 @@ AsyncReactor is a reactive architecural pattern to organize your Swift code.
 ## Usage<a name="usage"></a>
 ### General
 AsyncReactor is a reactive architecural pattern. The main component is an `AsyncReactor`. This `AsyncReactor` holds the `State` as well as the `Actions`.
+
+### Reactor Package (iOS 17+)
+
+With iOS 17 and later, we introduced the new **`Reactor`** package, which includes a protocol also named `Reactor`.
+
+Thanks to the new `@Observable` macro in Swift, there’s no longer the need to explicitly mark the `State` as `@Published`. By addibg the `@Observable` macro to your reactor class, the entire class is now automatically observable. If you want to exclude specific properties from observation, you can use the `@ObservationIgnored` macro.
+
+The way actions are handled remains the same as before — simply define an `Action` enum and implement the `action(_:)` method asynchronously.
+
+> ✅ Both versions of the Reactor (pre-iOS 17 and the new iOS 17+ version) can coexist in your app, as they are implemented in separate packages.
+
+```Swift
+import Reactor
+
+@Observable
+public class CatFactsReactor: Reactor
+
+public enum Action {
+    case loadCatFact
+}
+
+@Observable
+public class State {
+    var fact: AsyncLoad<String> = .none
+}
+    
+public private(set) var state = State()
+    
+@ObservationIgnored
+private var catFactService: CatFactService
+
+public init() {
+    send(.loadCatFact)
+}
+
+public func action(_ action: Action) async {
+    switch action {
+    case .loadCatFact:
+        state.fact = .loading
+
+        do {
+            let fact = try await catFactService.getRandomCatFact().fact
+            state.fact = .loaded(fact)
+        } catch {
+             state.fact = .error(error)
+        }
+    }
+}
+```
+
+## AsyncReactor Package (iOS <17)
 
 ```Swift
 class RepositorySearchReactor: AsyncReactor {
