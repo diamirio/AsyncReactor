@@ -174,7 +174,7 @@ class RepositorySearchReactor: AsyncReactor {
 ```
 
 ## Example <a name="example"></a>
-An example can be found in the [Example](./Example/AsyncReactorExample) folder.
+Example implementation can be found [here](https://github.com/diamirio/AsyncReactor-Example).
 
 ## License <a name="license"></a>
 ```
