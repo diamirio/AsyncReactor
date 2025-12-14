@@ -16,8 +16,6 @@ struct RepositoryDescriptionSheet: View {
     }
 }
 
-struct RepositoryDescriptionSheet_Previews: PreviewProvider {
-    static var previews: some View {
-        RepositoryDescriptionSheet(description: "Description")
-    }
+#Preview {
+    RepositoryDescriptionSheet(description: "Description")
 }

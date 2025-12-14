@@ -29,7 +29,7 @@ enum SortOptions: String, CaseIterable, Identifiable {
 }
 
 class RepositorySearchReactor: AsyncReactor {
-    enum Action {
+    enum AsyncAction {
         case onHidePrivateToggle
         case enterQuery(String)
         case load
@@ -66,7 +66,7 @@ class RepositorySearchReactor: AsyncReactor {
         }
     }
     
-    func action(_ action: Action) async {
+    func action(_ action: AsyncAction) async {
         switch action {
         case .onHidePrivateToggle:
             state.hidePrivate.toggle()

@@ -10,7 +10,11 @@ import SwiftUI
 
 extension ReactorBase {
     @MainActor
-    public func bind<T>(_ keyPath: KeyPath<State, T>, cancelId: CancelId? = nil, action: @escaping (T) -> Action) -> Binding<T> {
+    public func bind<T>(
+        _ keyPath: KeyPath<State, T>,
+        cancelId: CancelId? = nil,
+        action: @escaping (T) -> AsyncAction
+    ) -> Binding<T> {
         Binding {
             self.state[keyPath: keyPath]
         } set: { newValue in
@@ -25,12 +29,19 @@ extension ReactorBase {
     }
     
     @MainActor
-    public func bind<T>(_ keyPath: KeyPath<State, T>, cancelId: CancelId? = nil, action: @escaping @autoclosure () -> Action) -> Binding<T> {
+    public func bind<T>(
+        _ keyPath: KeyPath<State, T>
+        , cancelId: CancelId? = nil,
+        action: @escaping @autoclosure () -> AsyncAction
+    ) -> Binding<T> {
         bind(keyPath, cancelId: cancelId) { _ in action() }
     }
     
     @MainActor
-    public func bind<T>(_ keyPath: KeyPath<State, T>, action: @escaping (T) -> SyncAction) -> Binding<T> {
+    public func bind<T>(
+        _ keyPath: KeyPath<State, T>,
+        action: @escaping (T) -> SyncAction
+    ) -> Binding<T> {
         Binding {
             self.state[keyPath: keyPath]
         } set: { newValue in
@@ -39,7 +50,10 @@ extension ReactorBase {
     }
     
     @MainActor
-    public func bind<T>(_ keyPath: KeyPath<State, T>, action: @escaping @autoclosure () -> SyncAction) -> Binding<T> {
+    public func bind<T>(
+        _ keyPath: KeyPath<State, T>,
+        action: @escaping @autoclosure () -> SyncAction
+    ) -> Binding<T> {
         bind(keyPath) { _ in action() }
     }
 }
