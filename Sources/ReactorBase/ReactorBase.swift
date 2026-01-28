@@ -53,33 +53,40 @@ extension ReactorBase {
 
 // MARK: - Cancellation Support
 
-public struct CancelId: Hashable {
-    let id: AnyHashable
+public struct CancelId: Hashable, Sendable {
+    let id: UUID
     let mode: Mode
     
-    public init(id: AnyHashable, mode: Mode) {
+    public init(id: UUID, mode: Mode) {
         self.id = id
         self.mode = mode
     }
     
-    public struct Mode: OptionSet, Hashable {
+    public struct Mode: OptionSet, Hashable, Sendable {
         public let rawValue: Int
         
         public init(rawValue: Int) {
             self.rawValue = rawValue
         }
         
-        public static let lifecycle = Mode(rawValue: 1 << 0)
-        public static let inFlight  = Mode(rawValue: 1 << 1)
+        public static var lifecycle: Mode {
+            Mode(rawValue: 1 << 0)
+        }
+        
+        public static var inFlight: Mode {
+            Mode(rawValue: 1 << 1)
+        }
     }
 }
 
-struct TasksHolder {
-    @MainActor
-    static var tasks = [TaskKey: Task<Void, Never>]()
+@MainActor
+class TasksHolder {
+    var tasks = [TaskKey: Task<Void, Never>]()
+    
+    static var shared: TasksHolder = TasksHolder()
 }
 
-struct TaskKey: Hashable {
+struct TaskKey: Hashable, Sendable {
     let reactorId: ObjectIdentifier
     let id: CancelId
     
@@ -95,19 +102,19 @@ extension ReactorBase {
         let key = TaskKey(reactor: self, id: id)
         
         if id.mode.contains(.inFlight) {
-            TasksHolder.tasks[key]?.cancel()
+            TasksHolder.shared.tasks[key]?.cancel()
         }
         
         let task = Task {
             await self.action(action)
         }
         
-        TasksHolder.tasks[key] = task
+        TasksHolder.shared.tasks[key] = task
         
         await task.value
         
         if !task.isCancelled {
-            TasksHolder.tasks.removeValue(forKey: key)
+            TasksHolder.shared.tasks.removeValue(forKey: key)
         }
     }
     
@@ -115,26 +122,26 @@ extension ReactorBase {
         Task { await self.action(action, id: id) }
     }
     
-    public func lifecycleTask(_ action: @escaping @Sendable () async -> Void) {
+    public func lifecycleTask(_ action: @escaping @Sendable () async -> ()) {
         Task { @MainActor in
             let key = TaskKey(reactor: self, id: .init(id: UUID(), mode: .lifecycle))
             
             let task = Task.detached {
                 await action()
-                await MainActor.run { _ = TasksHolder.tasks.removeValue(forKey: key) }
+                await MainActor.run { _ = TasksHolder.shared.tasks.removeValue(forKey: key) }
             }
             
-            TasksHolder.tasks[key] = task
+            TasksHolder.shared.tasks[key] = task
         }
     }
     
     public func cancelLifecycleTasks() {
         Task { @MainActor in
-            let keys = TasksHolder.tasks.keys.filter { $0.id.mode.contains(.lifecycle) && $0.reactorId == ObjectIdentifier(self) }
+            let keys = TasksHolder.shared.tasks.keys.filter { $0.id.mode.contains(.lifecycle) && $0.reactorId == ObjectIdentifier(self) }
             
             for key in keys {
-                TasksHolder.tasks[key]?.cancel()
-                TasksHolder.tasks.removeValue(forKey: key)
+                TasksHolder.shared.tasks[key]?.cancel()
+                TasksHolder.shared.tasks.removeValue(forKey: key)
             }
         }
     }
