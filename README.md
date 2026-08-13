@@ -40,38 +40,38 @@ The way actions are handled remains the same as before — simply define an `Act
 import Reactor
 
 @Observable
-public class CatFactsReactor: Reactor
+public class CatFactsReactor: Reactor {
+	public enum Action {
+		case loadCatFact
+	}
 
-public enum Action {
-    case loadCatFact
-}
+	@Observable
+	public class State {
+		var fact: AsyncLoad<String> = .none
+	}
+		
+	public private(set) var state = State()
+		
+	@ObservationIgnored
+	private var catFactService: CatFactService
 
-@Observable
-public class State {
-    var fact: AsyncLoad<String> = .none
-}
-    
-public private(set) var state = State()
-    
-@ObservationIgnored
-private var catFactService: CatFactService
+	public init() {
+		send(.loadCatFact)
+	}
 
-public init() {
-    send(.loadCatFact)
-}
+	public func action(_ action: Action) async {
+		switch action {
+		case .loadCatFact:
+			state.fact = .loading
 
-public func action(_ action: Action) async {
-    switch action {
-    case .loadCatFact:
-        state.fact = .loading
-
-        do {
-            let fact = try await catFactService.getRandomCatFact().fact
-            state.fact = .loaded(fact)
-        } catch {
-             state.fact = .error(error)
-        }
-    }
+			do {
+				let fact = try await catFactService.getRandomCatFact().fact
+				state.fact = .loaded(fact)
+			} catch {
+				 state.fact = .error(error)
+			}
+		}
+	}
 }
 ```
 
