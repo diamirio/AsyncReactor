@@ -122,7 +122,7 @@ struct SearchView: View {
 }
 ```
 
-- `ReactorView(_ reactor: @autoclosure …, definesLifecycle: true) { content }` creates the reactor **once** (stored in `@State`/`@StateObject`), injects it into the environment and cancels its lifecycle tasks when the view goes away. Pass the reactor expression directly — do not create it elsewhere and pass an existing instance in a view body, or it is recreated.
+- `ReactorView(_ reactor: @autoclosure …, definesLifecycle: true) { content }` stores the reactor in `@State` (Reactor) / `@StateObject` (AsyncReactor), injects it into the environment and cancels its lifecycle tasks when the view goes away. Pass the reactor expression directly. With `Reactor`, the autoclosure is evaluated every time the `ReactorView` is initialized (the extra instance is discarded), so keep reactor `init` cheap and free of side effects — start loading from `.task { }` rather than from `init`.
 - Read the reactor with `@Environment(MyReactor.self)` (Reactor) or `@EnvironmentObject` (AsyncReactor). `ActionBinding` requires that a `ReactorView` for that reactor type is an ancestor.
 - A reactor on `ReactorView` with `definesLifecycle: false` leaves cancellation to a parent (child view sharing the parent's reactor).
 
