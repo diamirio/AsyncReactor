@@ -13,7 +13,7 @@ A small architecture for SwiftUI: a **reactor** owns a feature's `State` and han
 | `AsyncReactor` | `import AsyncReactor` | iOS 15 / macOS 12+. `ObservableObject` reactors with `@Published`. |
 | `ReactorBase` | (internal) | Shared protocol `ReactorBase`, `CancelId`, binding helpers. Not a product. |
 
-Both reactor flavours can coexist in one app, but a feature uses one. Source of truth: `Sources/ReactorBase`, `Sources/Reactor`, `Sources/AsyncReactor` — read them when unsure. `AsyncLoad<T>` used in examples is **not** part of this package (separate package `diamirio/AsyncLoad`).
+Both reactor flavours can coexist in one app, but a feature uses one. Source of truth: `Sources/ReactorBase`, `Sources/Reactor`, `Sources/AsyncReactor` — read them when unsure. `AsyncLoad<T>` used in examples is **not** part of this package and AsyncReactor does not depend on it. It is an optional, separate package (`diamirio/AsyncLoad`); if the project uses it, also load the companion skill `asyncload`. Without it, model request state with your own enum.
 
 ## References
 
@@ -145,7 +145,7 @@ A `SyncAction` binding applies immediately; an `Action` binding runs in a `Task`
 - Reactor owns state, validation and async work; the view owns layout, focus and presentation. Dismissal and navigation are owned by the presenter: pass callbacks into the reactor/child instead of using `@Environment(\.dismiss)` in a child.
 - Inject side-effecting dependencies (API, storage, clock) through protocols in `init`, default to the live one; previews and tests pass mocks. Never construct live services in a view body.
 - Mark non-state stored properties of an `@Observable` reactor with `@ObservationIgnored`.
-- Model request state with one value (`AsyncLoad<T>`: `.none/.loading/.loaded/.error`), not separate `isLoading`/`error`/`data` flags.
+- Model request state with one value (e.g. `AsyncLoad<T>` from `diamirio/AsyncLoad`, if the project uses it), not separate `isLoading`/`error`/`data` flags.
 - Do not call `Task { await reactor.action(...) }` from views when `send` does the same.
 - Do not mutate `state` from outside the reactor.
 

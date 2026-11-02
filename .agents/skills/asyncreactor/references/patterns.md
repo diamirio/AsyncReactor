@@ -83,4 +83,4 @@ Use the real reactor with a mock service; do not build a mock reactor.
 
 ## Request state
 
-Use one `AsyncLoad<T>` (package `diamirio/AsyncLoad`) per request: `.none`, `.loading`, `.loaded(T)`, `.error(Error)`. Set `.loading` before the work, `.loaded`/`.error` after. Do not mirror it with `isLoading`/`errorMessage` booleans.
+Use one `AsyncLoad<T>` (optional package `diamirio/AsyncLoad`, see skill `asyncload`) per request: `.none`, `.loading`, `.loaded(T)`, `.error(Error)`. Set `.loading` before the work, `.loaded`/`.error` after. Do not mirror it with `isLoading`/`errorMessage` booleans.
