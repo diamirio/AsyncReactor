@@ -39,6 +39,87 @@ case let .search(text):
 
 URLSession's `async` APIs throw `URLError(.cancelled)` rather than `CancellationError`; handle both or check `Task.isCancelled` before writing state.
 
+## Long-lived work: observing notifications and streams
+
+For work that lives as long as the screen — `NotificationCenter`, `AsyncSequence`s, store updates — use `lifecycleTask`. It is cancelled automatically when the owning `ReactorView` disappears.
+
+```swift
+import Reactor
+import ReactorBase
+
+extension Notification.Name {
+    static let didChangeDeviceFavorites = Notification.Name("didChangeDeviceFavorites")
+}
+
+@Observable
+final class DevicesReactor: Reactor {
+    enum Action {
+        case startObservingFavorites
+        case loadFavoriteDevices
+    }
+
+    @Observable
+    final class State {
+        var favorites = AsyncLoad<[Device]>.none
+    }
+
+    private(set) var state = State()
+
+    @ObservationIgnored
+    private var isObservingFavorites = false
+
+    func action(_ action: Action) async {
+        switch action {
+        case .startObservingFavorites:
+            guard !isObservingFavorites else { return }
+            isObservingFavorites = true
+
+            lifecycleTask { [weak self] in
+                for await _ in NotificationCenter.default.notifications(named: .didChangeDeviceFavorites) {
+                    guard let self else { return }
+                    await self.action(.loadFavoriteDevices)
+                }
+            }
+
+        case .loadFavoriteDevices:
+            ...
+        }
+    }
+}
+```
+
+```swift
+.task {
+    reactor.send(.startObservingFavorites)
+    await reactor.action(.loadFavoriteDevices)
+}
+```
+
+Things to get right:
+
+- **Do not start it in `init`.** With `Reactor`, `ReactorView` evaluates its reactor autoclosure on every initialization of the view and keeps only the first instance. A `lifecycleTask` started in `init` of a discarded instance is never cancelled — it runs forever, keeps that instance alive and reacts to every notification. Start it from an action triggered by the view (`.task`, `.onAppear`).
+- **Guard against starting twice.** `lifecycleTask` does not deduplicate, and `.task` can run again when the view re-appears. Use a flag as above, or the `CancelId` variant below.
+- **Capture `self` weakly** in the loop and check it per iteration, so an idle `for await` does not keep the reactor alive.
+- `lifecycleTask` takes a `@Sendable` async closure and runs it detached from the main actor. Touch state only through the reactor's main-actor API (`await self.action(...)`), not by mutating `state` inside the closure.
+- The task ends when the `ReactorView` goes away (`definesLifecycle: true`). With `definesLifecycle: false`, something else must call `cancelLifecycleTasks()`.
+
+Alternative without a flag — run the loop inside an action and give it a `CancelId`; `.inFlight` replaces a previous run and `.lifecycle` cancels it with the view:
+
+```swift
+case .observeFavorites:
+    for await _ in NotificationCenter.default.notifications(named: .didChangeDeviceFavorites) {
+        await self.action(.loadFavoriteDevices)
+    }
+```
+
+```swift
+.task {
+    reactor.send(.observeFavorites, id: CancelId(id: "favorites", mode: [.inFlight, .lifecycle]))
+}
+```
+
+Prefer this variant when the loop needs no extra setup; prefer `lifecycleTask` for fire-and-forget background work started from an action.
+
 ## Bindings
 
 ```swift

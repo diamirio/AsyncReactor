@@ -137,7 +137,9 @@ A `SyncAction` binding applies immediately; an `Action` binding runs in a `Task`
 
 ## Cancellation (summary)
 
-`CancelId(id:mode:)` with `mode` `.inFlight` (cancel the previous task with the same id, e.g. search-as-you-type) and/or `.lifecycle` (cancel when the owning `ReactorView` disappears). Use `reactor.send(.search, id: CancelId(id: "search", mode: [.inFlight, .lifecycle]))`. Cancellation is cooperative: the action body must hit a cancellable `await` or check `Task.isCancelled`, and must not write an error state for a `CancellationError`. See `references/patterns.md`.
+`CancelId(id:mode:)` with `mode` `.inFlight` (cancel the previous task with the same id, e.g. search-as-you-type) and/or `.lifecycle` (cancel when the owning `ReactorView` disappears). Use `reactor.send(.search, id: CancelId(id: "search", mode: [.inFlight, .lifecycle]))`. Cancellation is cooperative: the action body must hit a cancellable `await` or check `Task.isCancelled`, and must not write an error state for a `CancellationError`. For work that lives as long as the screen (notifications, async sequences) use `lifecycleTask` or a `.lifecycle` `CancelId` — never start it from `init`. Example in `references/patterns.md`.
+
+See `references/patterns.md`.
 
 ## Rules
 
