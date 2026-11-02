@@ -173,6 +173,10 @@ class RepositorySearchReactor: AsyncReactor {
 }
 ```
 
+## AI Agent Skill
+
+The repo ships an agent skill that explains how to use AsyncReactor (Reactor vs AsyncReactor, actions, bindings, cancellation, testing): [`.agents/skills/asyncreactor`](.agents/skills/asyncreactor/SKILL.md). Link or copy it into your project's skills directory to let coding agents write reactors consistently.
+
 ## Example <a name="example"></a>
 Example implementation can be found [here](https://github.com/diamirio/AsyncReactor-Example).
 
