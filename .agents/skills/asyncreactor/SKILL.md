@@ -11,9 +11,9 @@ A small architecture for SwiftUI: a **reactor** owns a feature's `State` and han
 |---|---|---|
 | `Reactor` | `import Reactor` | iOS 17 / macOS 14 / tvOS 17 / watchOS 10+. `@Observable` reactors. **Default choice.** |
 | `AsyncReactor` | `import AsyncReactor` | iOS 15 / macOS 12+. `ObservableObject` reactors with `@Published`. |
-| `ReactorBase` | (internal) | Shared protocol `ReactorBase`, `CancelId`, binding helpers. Not a product. |
+| `ReactorBase` | `import ReactorBase` | Shared protocol `ReactorBase`, `CancelId`, `send`, `bind`, `lifecycleTask`. Not a library product of its own, and **not re-exported** by `Reactor`/`AsyncReactor`: add `import ReactorBase` in every file that uses `CancelId`, `lifecycleTask` or other `ReactorBase` API (the Nein app does this in each reactor and view file). |
 
-Both reactor flavours can coexist in one app, but a feature uses one. Source of truth: `Sources/ReactorBase`, `Sources/Reactor`, `Sources/AsyncReactor` — read them when unsure. `AsyncLoad<T>` used in examples is **not** part of this package and AsyncReactor does not depend on it. It is an optional, separate package (`diamirio/AsyncLoad`); if the project uses it, also load the companion skill `asyncload`. Without it, model request state with your own enum.
+Latest release at time of writing is 1.2.x; check the version resolved in the project before relying on newer API. Both reactor flavours can coexist in one app, but a feature uses one. Source of truth: `Sources/ReactorBase`, `Sources/Reactor`, `Sources/AsyncReactor` — read them when unsure. `AsyncLoad<T>` used in examples is **not** part of this package and AsyncReactor does not depend on it. It is an optional, separate package (`diamirio/AsyncLoad`); if the project uses it, also load the companion skill `asyncload`. Without it, model request state with your own enum.
 
 ## References
 
@@ -124,13 +124,13 @@ struct SearchView: View {
 
 - `ReactorView(_ reactor: @autoclosure …, definesLifecycle: true) { content }` stores the reactor in `@State` (Reactor) / `@StateObject` (AsyncReactor), injects it into the environment and cancels its lifecycle tasks when the view goes away. Pass the reactor expression directly. With `Reactor`, the autoclosure is evaluated every time the `ReactorView` is initialized (the extra instance is discarded), so keep reactor `init` cheap and free of side effects — start loading from `.task { }` rather than from `init`.
 - Read the reactor with `@Environment(MyReactor.self)` (Reactor) or `@EnvironmentObject` (AsyncReactor). `ActionBinding` requires that a `ReactorView` for that reactor type is an ancestor.
-- A reactor on `ReactorView` with `definesLifecycle: false` leaves cancellation to a parent (child view sharing the parent's reactor).
+- `definesLifecycle: false` stops this `ReactorView` from cancelling the reactor's `.lifecycle` tasks when it disappears. Use it only if something else owns the reactor's lifetime.
 
 ## Bindings
 
 Two ways to bind state to a control; both write through an action instead of mutating state:
 
-- `@ActionBinding(R.self, keyPath: \.value, action: { .set($0) })` — property wrapper in a view. Add `cancelId:` for async actions.
+- `@ActionBinding(R.self, keyPath: \.value, action: { .set($0) })` — property wrapper in a view. Add `cancelId:` for async actions. An enum case constructor works as the action: `action: MyReactor.SyncAction.setName`.
 - `reactor.bind(\.value, action: { .set($0) })` → `Binding<T>`; use for ad-hoc bindings (`Toggle(isOn: reactor.bind(\.flag, action: .toggle))`).
 
 A `SyncAction` binding applies immediately; an `Action` binding runs in a `Task`, so the state updates after the action's first suspension point — use `SyncAction` for text fields.

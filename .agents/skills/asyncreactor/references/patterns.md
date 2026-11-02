@@ -2,6 +2,8 @@
 
 ## Cancellation
 
+Needs `import ReactorBase` for `CancelId`.
+
 ```swift
 // In-flight: a new search cancels the previous one
 reactor.send(.search(text), id: CancelId(id: "search", mode: .inFlight))
@@ -63,7 +65,6 @@ The `action:` closure receives the new value; an autoclosure form without a para
 
 - Give each screen a `static func create(...)` factory that wraps the view in `ReactorView(Reactor(...))`; call sites never instantiate reactors.
 - Parent → child: pass data and callbacks (`onSave: () -> Void`) to the child's factory. The parent changes its own sheet/navigation state in the callback.
-- Child views that only render parent state and own no business logic may read the parent's reactor from the environment and use `ReactorView(..., definesLifecycle: false)` only when they really share it; prefer a separate reactor.
 
 ## Dependencies and mocks
 
