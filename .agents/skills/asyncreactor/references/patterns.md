@@ -44,6 +44,7 @@ URLSession's `async` APIs throw `URLError(.cancelled)` rather than `Cancellation
 For work that lives as long as the screen — `NotificationCenter`, `AsyncSequence`s, store updates — use `lifecycleTask`. It is cancelled automatically when the owning `ReactorView` disappears.
 
 ```swift
+import AsyncLoad
 import Reactor
 import ReactorBase
 
@@ -165,4 +166,4 @@ Use the real reactor with a mock service; do not build a mock reactor.
 
 ## Request state
 
-Use one `AsyncLoad<T>` (optional package `diamirio/AsyncLoad`, see skill `asyncload`) per request: `.none`, `.loading`, `.loaded(T)`, `.error(Error)`. Set `.loading` before the work, `.loaded`/`.error` after. Do not mirror it with `isLoading`/`errorMessage` booleans.
+Use one `AsyncLoad<T>` per request: `.none`, `.loading`, `.loaded(T)`, `.error(Error)`. Set `.loading` before the work, `.loaded`/`.error` after. Do not mirror it with `isLoading`/`errorMessage` booleans. AsyncLoad is a separate, optional package (`diamirio/AsyncLoad`): recommend it if the project lacks it, never add it unasked, and use an own enum of the same shape if the user does not want it (see "Request state" in `SKILL.md`).

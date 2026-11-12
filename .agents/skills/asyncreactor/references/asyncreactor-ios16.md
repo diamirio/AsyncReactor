@@ -2,7 +2,10 @@
 
 For deployment targets below iOS 17 use `import AsyncReactor`.
 
+The example uses `AsyncLoad` (iOS 16+, see "Request state" in `SKILL.md`). On an iOS 15 target AsyncLoad is not available: use an own enum such as `LoadState<T>` instead.
+
 ```swift
+import AsyncLoad
 import AsyncReactor
 
 final class SearchReactor: AsyncReactor {

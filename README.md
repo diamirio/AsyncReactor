@@ -75,6 +75,8 @@ public func action(_ action: Action) async {
 }
 ```
 
+> ℹ️ The example uses `AsyncLoad` to model the request state. It comes from the separate package [AsyncLoad](https://github.com/diamirio/AsyncLoad) (`import AsyncLoad`, iOS 16+). AsyncReactor does not depend on it, but it is the recommended way to model loading, loaded and error states in a reactor.
+
 ## AsyncReactor Package (iOS <17)
 
 ```Swift

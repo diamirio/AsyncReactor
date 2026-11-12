@@ -11,9 +11,25 @@ A small architecture for SwiftUI: a **reactor** owns a feature's `State` and han
 |---|---|---|
 | `Reactor` | `import Reactor` | iOS 17 / macOS 14 / tvOS 17 / watchOS 10+. `@Observable` reactors. **Default choice.** |
 | `AsyncReactor` | `import AsyncReactor` | iOS 15 / macOS 12+. `ObservableObject` reactors with `@Published`. |
-| `ReactorBase` | `import ReactorBase` | Shared protocol `ReactorBase`, `CancelId`, `send`, `bind`, `lifecycleTask`. Not a library product of its own, and **not re-exported** by `Reactor`/`AsyncReactor`: add `import ReactorBase` in every file that uses `CancelId`, `lifecycleTask` or other `ReactorBase` API (the Nein app does this in each reactor and view file). |
+| `ReactorBase` | `import ReactorBase` | Shared protocol `ReactorBase`, `CancelId`, `send`, `bind`, `lifecycleTask`. Not a library product of its own, and **not re-exported** by `Reactor`/`AsyncReactor`: add `import ReactorBase` in every file that uses `CancelId`, `lifecycleTask` or other `ReactorBase` API. |
 
-Latest release at time of writing is 1.2.x; check the version resolved in the project before relying on newer API. Both reactor flavours can coexist in one app, but a feature uses one. Source of truth: `Sources/ReactorBase`, `Sources/Reactor`, `Sources/AsyncReactor` — read them when unsure. `AsyncLoad<T>` used in examples is **not** part of this package and AsyncReactor does not depend on it. It is an optional, separate package (`diamirio/AsyncLoad`); if the project uses it, also load the companion skill `asyncload`. Without it, model request state with your own enum.
+Check the version resolved in the project (`Package.resolved`) before relying on newer API. Both reactor flavours can coexist in one app, but a feature uses one. Source of truth: `Sources/ReactorBase`, `Sources/Reactor`, `Sources/AsyncReactor` — read them when unsure.
+
+## Request state: AsyncLoad (recommended, optional)
+
+The examples model request state with `AsyncLoad<T>` from the separate package [`diamirio/AsyncLoad`](https://github.com/diamirio/AsyncLoad) (`import AsyncLoad`). It is **not** part of AsyncReactor and AsyncReactor does not depend on it, but it is the recommended companion: one value per request (`.none`, `.loading`, `.loaded(T)`, `.error(Error)`) instead of `isLoading`/`error`/`data` flags. AsyncLoad requires iOS 16 / macOS 13, Swift 6.1, and `T: Equatable & Sendable`.
+
+- Project already depends on AsyncLoad (`Package.swift`/`Package.resolved`, or `import AsyncLoad` in the code): use it as in the examples. If an `asyncload` skill is available, read it for `CachedAsyncLoad`, `AsyncLoadNoContent` and the views.
+- Project does not use it yet: recommend adding `diamirio/AsyncLoad` to the user. Never add the dependency on your own.
+- User does not want it, or the deployment target is below iOS 16: use a small enum of your own with the same shape, and apply the same rules:
+
+```swift
+enum LoadState<T> {
+    case none, loading, loaded(T), error(Error)
+}
+```
+
+The examples read `.item` and `.error` on the state (AsyncLoad API); add matching computed properties to the own enum if needed.
 
 ## References
 
@@ -24,6 +40,7 @@ Latest release at time of writing is 1.2.x; check the version resolved in the pr
 ## Anatomy (Reactor, iOS 17+)
 
 ```swift
+import AsyncLoad
 import Reactor
 
 @Observable
@@ -58,6 +75,8 @@ final class SearchReactor: Reactor {
             state.items = .loading
             do {
                 state.items = .loaded(try await service.search(state.query))
+            } catch is CancellationError {
+                return
             } catch {
                 state.items = .error(error)
             }
@@ -147,7 +166,7 @@ See `references/patterns.md`.
 - Reactor owns state, validation and async work; the view owns layout, focus and presentation. Dismissal and navigation are owned by the presenter: pass callbacks into the reactor/child instead of using `@Environment(\.dismiss)` in a child.
 - Inject side-effecting dependencies (API, storage, clock) through protocols in `init`, default to the live one; previews and tests pass mocks. Never construct live services in a view body.
 - Mark non-state stored properties of an `@Observable` reactor with `@ObservationIgnored`.
-- Model request state with one value (e.g. `AsyncLoad<T>` from `diamirio/AsyncLoad`, if the project uses it), not separate `isLoading`/`error`/`data` flags.
+- Model request state with one value per request, not separate `isLoading`/`error`/`data` flags. Prefer `AsyncLoad<T>` (see "Request state"); fall back to an own enum only if the user does not want AsyncLoad or the target is below iOS 16.
 - Do not call `Task { await reactor.action(...) }` from views when `send` does the same.
 - Do not mutate `state` from outside the reactor.
 
