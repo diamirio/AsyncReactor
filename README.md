@@ -75,6 +75,8 @@ public func action(_ action: Action) async {
 }
 ```
 
+> ℹ️ The example uses `AsyncLoad` to model the request state. It comes from the separate package [AsyncLoad](https://github.com/diamirio/AsyncLoad) (`import AsyncLoad`, iOS 16+). AsyncReactor does not depend on it, but it is the recommended way to model loading, loaded and error states in a reactor.
+
 ## AsyncReactor Package (iOS <17)
 
 ```Swift
@@ -172,6 +174,10 @@ class RepositorySearchReactor: AsyncReactor {
     }
 }
 ```
+
+## AI Agent Skill
+
+The repo ships an agent skill that explains how to use AsyncReactor (Reactor vs AsyncReactor, actions, bindings, cancellation, testing): [`.agents/skills/asyncreactor`](.agents/skills/asyncreactor/SKILL.md). Link or copy it into your project's skills directory to let coding agents write reactors consistently.
 
 ## Example <a name="example"></a>
 Example implementation can be found [here](https://github.com/diamirio/AsyncReactor-Example).
